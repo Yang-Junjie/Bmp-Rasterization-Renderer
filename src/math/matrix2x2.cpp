@@ -10,7 +10,7 @@ Matrix2x2::Matrix2x2(const oeVec2 &col1, const oeVec2 &col2):column1(col1),colum
 {
 }
 
-Matrix2x2::Matrix2x2(const double &col1_x, const double &col1_y, const double &col2_x, const double &col2_y)
+Matrix2x2::Matrix2x2(const real &col1_x, const real &col1_y, const real &col2_x, const real &col2_y)
 {
    column1 = { col1_x , col1_y };
    column2 = { col2_x , col2_y };
@@ -38,14 +38,14 @@ Matrix2x2 &Matrix2x2::operator-=(const Matrix2x2 &rhs)
 	return *this;
 }
 
-Matrix2x2 &Matrix2x2::operator*=(const double &factor)
+Matrix2x2 &Matrix2x2::operator*=(const real &factor)
 {
     column1 *= factor;
 	column2 *= factor;
 	return *this;
 }
 
-Matrix2x2 &Matrix2x2::operator/=(const double &factor)
+Matrix2x2 &Matrix2x2::operator/=(const real &factor)
 {
     column1 /= factor;
 	column2 /= factor;
@@ -73,26 +73,26 @@ oeVec2 Matrix2x2::row2() const
     return oeVec2(column1.y, column2.y);
 }
 
-double& Matrix2x2::e11()
+real& Matrix2x2::e11()
 {
     return column1.x;
 }
 
-double& Matrix2x2::e21()
+real& Matrix2x2::e21()
 {
     return column1.y;
 }
-double& Matrix2x2::e12()
+real& Matrix2x2::e12()
 {
     return column2.x;
 }
 
-double& Matrix2x2::e22()
+real& Matrix2x2::e22()
 {
     return column2.y;
 }
 
-double Matrix2x2::determinant() const
+real Matrix2x2::determinant() const
 {
     return determinant(*this);
 }
@@ -127,7 +127,7 @@ Matrix2x2& Matrix2x2::clear()
     return *this;
 }
 
-Matrix2x2& Matrix2x2::set(const double& col1_x, const double& col1_y, const double& col2_x, const double& col2_y)
+Matrix2x2& Matrix2x2::set(const real& col1_x, const real& col1_y, const real& col2_x, const real& col2_y)
 {
     column1.set(col1_x, col1_y);
     column2.set(col2_x, col2_y);
@@ -170,14 +170,14 @@ Matrix2x2 Matrix2x2::multiply(const Matrix2x2& lhs, const Matrix2x2& rhs)
                         lhs.column1.y * rhs.column2.x + lhs.column2.y * rhs.column2.y);
 }
 
-double Matrix2x2::determinant(const Matrix2x2& mat)
+real Matrix2x2::determinant(const Matrix2x2& mat)
 {
     return mat.column1.x * mat.column2.y - mat.column2.x * mat.column1.y;
 }
 
 bool Matrix2x2::invert(Matrix2x2& mat)
 {
-    const double det = mat.determinant();
+    const real det = mat.determinant();
 
     if (det<0.00000001)
         return false;
