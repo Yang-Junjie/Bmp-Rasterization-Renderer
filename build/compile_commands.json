@@ -1,0 +1,20 @@
+[
+{
+  "directory": "G:/cpp/code/BMP/build",
+  "command": "C:\\PROGRA~2\\CppTools\\mingw64\\bin\\G__~1.EXE  @CMakeFiles/bmp.dir/includes_CXX.rsp -g -o CMakeFiles\\bmp.dir\\src\\bmp.cpp.obj -c G:\\cpp\\code\\BMP\\src\\bmp.cpp",
+  "file": "G:/cpp/code/BMP/src/bmp.cpp",
+  "output": "CMakeFiles/bmp.dir/src/bmp.cpp.obj"
+},
+{
+  "directory": "G:/cpp/code/BMP/build",
+  "command": "C:\\PROGRA~2\\CppTools\\mingw64\\bin\\G__~1.EXE  @CMakeFiles/bmp.dir/includes_CXX.rsp -g -o CMakeFiles\\bmp.dir\\src\\draw.cpp.obj -c G:\\cpp\\code\\BMP\\src\\draw.cpp",
+  "file": "G:/cpp/code/BMP/src/draw.cpp",
+  "output": "CMakeFiles/bmp.dir/src/draw.cpp.obj"
+},
+{
+  "directory": "G:/cpp/code/BMP/build",
+  "command": "C:\\PROGRA~2\\CppTools\\mingw64\\bin\\G__~1.EXE  @CMakeFiles/bmp.dir/includes_CXX.rsp -g -o CMakeFiles\\bmp.dir\\src\\main.cpp.obj -c G:\\cpp\\code\\BMP\\src\\main.cpp",
+  "file": "G:/cpp/code/BMP/src/main.cpp",
+  "output": "CMakeFiles/bmp.dir/src/main.cpp.obj"
+}
+]
