@@ -109,7 +109,7 @@ Matrix2x2& Matrix2x2::invert()
     return *this;
 }
 
-Matrix2x2& Matrix2x2::multiply(const Matrix2x2& rhs)
+Matrix2x2& Matrix2x2::multiply(const  Matrix2x2& rhs)
 {
     *this = multiply(*this, rhs);
     return *this;
@@ -157,12 +157,12 @@ Matrix2x2 Matrix2x2::identityMatrix()
     return Matrix2x2(1, 0, 0, 1);
 }
 
-oeVec2 Matrix2x2::multiply(const Matrix2x2& lhs, const oeVec2& rhs)
+oeVec2 Matrix2x2::multiply(const Matrix2x2& lhs,  const oeVec2& rhs)
 {
     return oeVec2(lhs.column1.x * rhs.x + lhs.column2.x * rhs.y, lhs.column1.y * rhs.x + lhs.column2.y * rhs.y);
 }
 
-Matrix2x2 Matrix2x2::multiply(const Matrix2x2& lhs, const Matrix2x2& rhs)
+Matrix2x2 Matrix2x2::multiply( const Matrix2x2& lhs, const Matrix2x2& rhs)
 {
     return Matrix2x2(lhs.column1.x * rhs.column1.x + lhs.column2.x * rhs.column1.y,
                         lhs.column1.y * rhs.column1.x + lhs.column2.y * rhs.column1.y,

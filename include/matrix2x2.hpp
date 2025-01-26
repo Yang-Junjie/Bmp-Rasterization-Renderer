@@ -30,7 +30,7 @@ struct Matrix2x2
         Matrix2x2& transpose();
         Matrix2x2& invert();
         Matrix2x2& multiply(const Matrix2x2& rhs);
-        oeVec2 multiply(const oeVec2& rhs)const;
+        oeVec2 multiply(const oeVec2& rhs) const;
 
         Matrix2x2& clear();
         Matrix2x2& set(const real& col1_x, const real& col1_y, const real& col2_x, const real& col2_y);
@@ -40,7 +40,7 @@ struct Matrix2x2
         static Matrix2x2 skewSymmetricMatrix(const oeVec2& r);
         static Matrix2x2 identityMatrix();
         static oeVec2 multiply(const Matrix2x2& lhs, const oeVec2& rhs);
-        static Matrix2x2 multiply(const Matrix2x2& lhs, const Matrix2x2& rhs);
+        static Matrix2x2 multiply(const Matrix2x2& lhs,const Matrix2x2& rhs);
         static real determinant(const Matrix2x2& mat);
         static bool invert(Matrix2x2& mat);
 

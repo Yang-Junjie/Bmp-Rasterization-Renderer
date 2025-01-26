@@ -116,11 +116,59 @@ CMakeFiles/bmp.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/bmp.dir/src/main.cpp.s"
 	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S G:\cpp\code\BMP\src\main.cpp -o CMakeFiles\bmp.dir\src\main.cpp.s
 
+CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj: CMakeFiles/bmp.dir/flags.make
+CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj: CMakeFiles/bmp.dir/includes_CXX.rsp
+CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj: G:/cpp/code/BMP/src/math/matrix2x2.cpp
+CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj: CMakeFiles/bmp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=G:\cpp\code\BMP\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj -MF CMakeFiles\bmp.dir\src\math\matrix2x2.cpp.obj.d -o CMakeFiles\bmp.dir\src\math\matrix2x2.cpp.obj -c G:\cpp\code\BMP\src\math\matrix2x2.cpp
+
+CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.i"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E G:\cpp\code\BMP\src\math\matrix2x2.cpp > CMakeFiles\bmp.dir\src\math\matrix2x2.cpp.i
+
+CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.s"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S G:\cpp\code\BMP\src\math\matrix2x2.cpp -o CMakeFiles\bmp.dir\src\math\matrix2x2.cpp.s
+
+CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj: CMakeFiles/bmp.dir/flags.make
+CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj: CMakeFiles/bmp.dir/includes_CXX.rsp
+CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj: G:/cpp/code/BMP/src/math/matrix3x3.cpp
+CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj: CMakeFiles/bmp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=G:\cpp\code\BMP\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj -MF CMakeFiles\bmp.dir\src\math\matrix3x3.cpp.obj.d -o CMakeFiles\bmp.dir\src\math\matrix3x3.cpp.obj -c G:\cpp\code\BMP\src\math\matrix3x3.cpp
+
+CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.i"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E G:\cpp\code\BMP\src\math\matrix3x3.cpp > CMakeFiles\bmp.dir\src\math\matrix3x3.cpp.i
+
+CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.s"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S G:\cpp\code\BMP\src\math\matrix3x3.cpp -o CMakeFiles\bmp.dir\src\math\matrix3x3.cpp.s
+
+CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj: CMakeFiles/bmp.dir/flags.make
+CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj: CMakeFiles/bmp.dir/includes_CXX.rsp
+CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj: G:/cpp/code/BMP/src/math/matrix4x4.cpp
+CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj: CMakeFiles/bmp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=G:\cpp\code\BMP\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj -MF CMakeFiles\bmp.dir\src\math\matrix4x4.cpp.obj.d -o CMakeFiles\bmp.dir\src\math\matrix4x4.cpp.obj -c G:\cpp\code\BMP\src\math\matrix4x4.cpp
+
+CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.i"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E G:\cpp\code\BMP\src\math\matrix4x4.cpp > CMakeFiles\bmp.dir\src\math\matrix4x4.cpp.i
+
+CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.s"
+	C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S G:\cpp\code\BMP\src\math\matrix4x4.cpp -o CMakeFiles\bmp.dir\src\math\matrix4x4.cpp.s
+
 # Object files for target bmp
 bmp_OBJECTS = \
 "CMakeFiles/bmp.dir/src/bmp.cpp.obj" \
 "CMakeFiles/bmp.dir/src/draw.cpp.obj" \
-"CMakeFiles/bmp.dir/src/main.cpp.obj"
+"CMakeFiles/bmp.dir/src/main.cpp.obj" \
+"CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj" \
+"CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj" \
+"CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj"
 
 # External object files for target bmp
 bmp_EXTERNAL_OBJECTS =
@@ -128,11 +176,14 @@ bmp_EXTERNAL_OBJECTS =
 bmp.exe: CMakeFiles/bmp.dir/src/bmp.cpp.obj
 bmp.exe: CMakeFiles/bmp.dir/src/draw.cpp.obj
 bmp.exe: CMakeFiles/bmp.dir/src/main.cpp.obj
+bmp.exe: CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj
+bmp.exe: CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj
+bmp.exe: CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj
 bmp.exe: CMakeFiles/bmp.dir/build.make
 bmp.exe: CMakeFiles/bmp.dir/linkLibs.rsp
 bmp.exe: CMakeFiles/bmp.dir/objects1.rsp
 bmp.exe: CMakeFiles/bmp.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=G:\cpp\code\BMP\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable bmp.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=G:\cpp\code\BMP\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable bmp.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\bmp.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

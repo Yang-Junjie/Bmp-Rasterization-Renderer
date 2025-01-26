@@ -1,5 +1,5 @@
 CMakeFiles/bmp.dir/src/bmp.cpp.obj: G:\cpp\code\BMP\src\bmp.cpp \
- G:/cpp/code/BMP/include/bmp.h \
+ G:/cpp/code/BMP/include/bmp.hpp \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/fstream \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/requires_hosted.h \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \

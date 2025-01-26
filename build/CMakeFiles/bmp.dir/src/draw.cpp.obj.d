@@ -1,5 +1,5 @@
 CMakeFiles/bmp.dir/src/draw.cpp.obj: G:\cpp\code\BMP\src\draw.cpp \
- G:/cpp/code/BMP/include/draw.h G:/cpp/code/BMP/include/bmp.h \
+ G:/cpp/code/BMP/include/draw.hpp G:/cpp/code/BMP/include/bmp.hpp \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/fstream \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/requires_hosted.h \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
@@ -145,7 +145,7 @@ CMakeFiles/bmp.dir/src/draw.cpp.obj: G:\cpp\code\BMP\src\draw.cpp \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstdint \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdint.h \
  C:/Program\ Files\ (x86)/CppTools/mingw64/x86_64-w64-mingw32/include/stdint.h \
- G:/cpp/code/BMP/include/vector2d.h \
+ G:/cpp/code/BMP/include/vector2d.hpp \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath \
  C:/Program\ Files\ (x86)/CppTools/mingw64/x86_64-w64-mingw32/include/math.h \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/specfun.h \
@@ -162,4 +162,5 @@ CMakeFiles/bmp.dir/src/draw.cpp.obj: G:\cpp\code\BMP\src\draw.cpp \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/tr1/poly_hermite.tcc \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/tr1/poly_laguerre.tcc \
  C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/tr1/riemann_zeta.tcc \
- C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream
+ C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream \
+ G:/cpp/code/BMP/include/common.hpp

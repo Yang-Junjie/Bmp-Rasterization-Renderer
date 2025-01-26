@@ -200,6 +200,78 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/math/matrix2x2.obj: src/math/matrix2x2.cpp.obj
+.PHONY : src/math/matrix2x2.obj
+
+# target to build an object file
+src/math/matrix2x2.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.obj
+.PHONY : src/math/matrix2x2.cpp.obj
+
+src/math/matrix2x2.i: src/math/matrix2x2.cpp.i
+.PHONY : src/math/matrix2x2.i
+
+# target to preprocess a source file
+src/math/matrix2x2.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.i
+.PHONY : src/math/matrix2x2.cpp.i
+
+src/math/matrix2x2.s: src/math/matrix2x2.cpp.s
+.PHONY : src/math/matrix2x2.s
+
+# target to generate assembly for a file
+src/math/matrix2x2.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix2x2.cpp.s
+.PHONY : src/math/matrix2x2.cpp.s
+
+src/math/matrix3x3.obj: src/math/matrix3x3.cpp.obj
+.PHONY : src/math/matrix3x3.obj
+
+# target to build an object file
+src/math/matrix3x3.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.obj
+.PHONY : src/math/matrix3x3.cpp.obj
+
+src/math/matrix3x3.i: src/math/matrix3x3.cpp.i
+.PHONY : src/math/matrix3x3.i
+
+# target to preprocess a source file
+src/math/matrix3x3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.i
+.PHONY : src/math/matrix3x3.cpp.i
+
+src/math/matrix3x3.s: src/math/matrix3x3.cpp.s
+.PHONY : src/math/matrix3x3.s
+
+# target to generate assembly for a file
+src/math/matrix3x3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix3x3.cpp.s
+.PHONY : src/math/matrix3x3.cpp.s
+
+src/math/matrix4x4.obj: src/math/matrix4x4.cpp.obj
+.PHONY : src/math/matrix4x4.obj
+
+# target to build an object file
+src/math/matrix4x4.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.obj
+.PHONY : src/math/matrix4x4.cpp.obj
+
+src/math/matrix4x4.i: src/math/matrix4x4.cpp.i
+.PHONY : src/math/matrix4x4.i
+
+# target to preprocess a source file
+src/math/matrix4x4.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.i
+.PHONY : src/math/matrix4x4.cpp.i
+
+src/math/matrix4x4.s: src/math/matrix4x4.cpp.s
+.PHONY : src/math/matrix4x4.s
+
+# target to generate assembly for a file
+src/math/matrix4x4.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bmp.dir\build.make CMakeFiles/bmp.dir/src/math/matrix4x4.cpp.s
+.PHONY : src/math/matrix4x4.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -218,6 +290,15 @@ help:
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s
+	@echo ... src/math/matrix2x2.obj
+	@echo ... src/math/matrix2x2.i
+	@echo ... src/math/matrix2x2.s
+	@echo ... src/math/matrix3x3.obj
+	@echo ... src/math/matrix3x3.i
+	@echo ... src/math/matrix3x3.s
+	@echo ... src/math/matrix4x4.obj
+	@echo ... src/math/matrix4x4.i
+	@echo ... src/math/matrix4x4.s
 .PHONY : help
 
 

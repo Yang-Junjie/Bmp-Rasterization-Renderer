@@ -56,7 +56,6 @@
 
 	Matrix3x3& Matrix3x3::operator/=(const real& factor)
 	{
-		if(factor<Constant::Epsilon)return;
 		column1 /= factor;
 		column2 /= factor;
 		column3 /= factor;

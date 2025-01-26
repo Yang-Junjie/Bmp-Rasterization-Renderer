@@ -85,8 +85,8 @@ void Draw::DrawLineDDA(int x0, int y0, int x1, int y1)
 
 void Draw::DrawRectangle(int x, int y, int width, int height)
 {
-    for(int i = x;i<=width;i++){
-        for(int j = y;j<=height;j++){
+    for(int i = x;i<=x+width;i++){
+        for(int j = y;j<=y+height;j++){
              m_bmp->setPixel(i,j,this->r,this->g,this->b);
         }
     }
