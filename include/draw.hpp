@@ -19,7 +19,7 @@ public :
     std::tuple<int,int,int> GetColor();
 
     void SpreadBackground();
-
+    void DrawPoint(int x0, int y0);
     void DrawLineBresenham(int x0,int y0,int x1,int y1);
     void DrawLineDDA(int x0,int y0,int x1,int y1);
   

@@ -56,6 +56,12 @@ void Draw::SpreadBackground()
     }
 }
 
+void Draw::DrawPoint(int x,int y)
+{
+    
+    m_bmp->setPixel(x, y, this->r,this->g,this->b);  
+}
+
 void Draw::DrawLineBresenham(int x0, int y0, int x1, int y1)
 {
     int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;

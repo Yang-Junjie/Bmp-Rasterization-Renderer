@@ -14,6 +14,13 @@
 
     Matrix4x4(const Matrix3x3& mat);
     Matrix4x4(const Matrix4x4& mat) = default;
+    friend std::ostream& operator<<(std::ostream& os,  Matrix4x4& p) {
+        os << "{" << p.e11() << " " << p.e12()<<" " << p.e13()<<" " << p.e14() <<'\n'
+       << "{" << p.e21() << " " << p.e22()<<" " << p.e23()<<" " << p.e24() <<'\n'
+      << "{" << p.e31() << " " << p.e32()<<" " << p.e33()<<" " << p.e34() <<'\n'
+        << "{" << p.e41() << " " << p.e42()<<" " << p.e43()<<" " << p.e44() <<'\n';
+        return os; 
+    }
 
     Matrix4x4(Matrix4x4&& other) = default;
 

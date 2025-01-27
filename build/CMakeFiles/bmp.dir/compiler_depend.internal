@@ -485,6 +485,7 @@ CMakeFiles/bmp.dir/src/main.cpp.obj
  C:/Program Files (x86)/CppTools/mingw64/x86_64-w64-mingw32/include/wctype.h
  G:/cpp/code/BMP/include/Transfrom.hpp
  G:/cpp/code/BMP/include/bmp.hpp
+ G:/cpp/code/BMP/include/camera.hpp
  G:/cpp/code/BMP/include/common.hpp
  G:/cpp/code/BMP/include/draw.hpp
  G:/cpp/code/BMP/include/matrix2x2.hpp

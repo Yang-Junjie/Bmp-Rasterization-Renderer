@@ -128,7 +128,14 @@ struct oeVec3
         return v1.x * v2.x + v1.y * v2.y+ v1.z * v2.z;
     }
 
-    
+    // 叉乘
+    oeVec3 cross(const oeVec3& v) const {
+        return oeVec3(
+            y * v.z - z * v.y,
+            z * v.x - x * v.z,
+            x * v.y - y * v.x
+        );
+    }
     real LengthSquared() const {
         return this->x * this->x + this->y * this->y,this->z * this->z;
     }

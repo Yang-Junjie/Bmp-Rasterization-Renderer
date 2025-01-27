@@ -95,4 +95,44 @@ namespace Transform {
                          rotMat.e31(), rotMat.e32(), rotMat.e33(), 0,
                          0, 0, 0, 1);
     }
+
+    
+    // Matrix4x4 ViewTransformation(const oeVec3& e, const oeVec3& g, const oeVec3& t) {
+    //     g.normalize();
+    //     t.normalize();
+    //     oeVec3 s = g.cross(t);
+    //     return Matrix4x4(s.x,t.x,-g.x,0,
+    //                      s.x,t.x,-g.x,0,
+    //                      s.x,t.x,-g.x,0,
+    //                        0,  0,   0,1).multiply(Matrix4x4(1,0,0,0,0,1,0,0,0,0,1,0,-e.x,-e.y,-e.z,1));
+    // }
+
+   Matrix4x4 PerspectiveProjection(real eye_fov, real aspect_ratio,
+                                      real zNear, real zFar) {
+    Matrix4x4 proj, ortho;
+    Matrix4x4 projection = {1,0,0,0,
+                            0,1,0,0,
+                            0,0,1,0,
+                            0,0,0,1};
+    proj={zNear, 0, 0, 0,
+            0, zNear, 0, 0,
+            0, 0, zNear + zFar, -zNear * zFar,
+            0, 0, 1, 0};
+
+    double w, h, z;
+    h = zNear * tan(eye_fov / 2) * 2;
+    w = h * aspect_ratio;
+    z = zFar - zNear;
+
+    ortho={ 2 / w, 0, 0, 0,
+             0, 2 / h, 0, 0,
+             0, 0, 2 / z, -(zFar+zNear) / 2,
+             0, 0, 0, 1};
+             				
+    projection = (ortho.transpose().multiply(proj.transpose())).multiply(projection);
+
+    return projection;
+
+    }
+   
 }

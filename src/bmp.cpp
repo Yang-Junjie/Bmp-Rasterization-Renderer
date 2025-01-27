@@ -1,12 +1,12 @@
  #include "bmp.hpp"
 
-
  Bmp::Bmp(int width, int height) : width(width), height(height) {
         // 计算每行字节数（必须是4的倍数）
         row_stride = ((width * 3 + 3) / 4) * 4;
         data.resize(row_stride * height);
 }
  bool Bmp::save(const std::string& path) const {
+       
         BMPFileHeader fileHeader;
         BMPInfoHeader infoHeader;
         infoHeader.width = width;
@@ -16,12 +16,12 @@
         fileHeader.fileSize = fileHeader.offsetData + static_cast<uint32_t>(data.size());
 
         std::ofstream outFile(path, std::ios::binary);
-        if (!outFile) return false;
+        if (!outFile)  return false;
 
         outFile.write(reinterpret_cast<const char*>(&fileHeader), sizeof(fileHeader));
         outFile.write(reinterpret_cast<const char*>(&infoHeader), sizeof(infoHeader));
         outFile.write(reinterpret_cast<const char*>(data.data()), data.size());
-
+       
         return true;
 }
 int Bmp::GetWidth()

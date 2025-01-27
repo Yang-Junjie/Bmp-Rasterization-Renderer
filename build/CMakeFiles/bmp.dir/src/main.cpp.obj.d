@@ -169,4 +169,4 @@ CMakeFiles/bmp.dir/src/main.cpp.obj: G:\cpp\code\BMP\src\main.cpp \
  G:/cpp/code/BMP/include/matrix2x2.hpp \
  G:/cpp/code/BMP/include/matrix3x3.hpp \
  G:/cpp/code/BMP/include/matrix4x4.hpp \
- G:/cpp/code/BMP/include/Transfrom.hpp
+ G:/cpp/code/BMP/include/Transfrom.hpp G:/cpp/code/BMP/include/camera.hpp

@@ -482,6 +482,7 @@ CMakeFiles/bmp.dir/src/main.cpp.obj: G:/cpp/code/BMP/src/main.cpp \
   C:/Program\ Files\ (x86)/CppTools/mingw64/x86_64-w64-mingw32/include/wctype.h \
   G:/cpp/code/BMP/include/Transfrom.hpp \
   G:/cpp/code/BMP/include/bmp.hpp \
+  G:/cpp/code/BMP/include/camera.hpp \
   G:/cpp/code/BMP/include/common.hpp \
   G:/cpp/code/BMP/include/draw.hpp \
   G:/cpp/code/BMP/include/matrix2x2.hpp \
@@ -1036,6 +1037,8 @@ C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/incl
 C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/ios_base.h:
 
 C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/istream.tcc:
+
+G:/cpp/code/BMP/include/camera.hpp:
 
 C:/Program\ Files\ (x86)/CppTools/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/locale_classes.h:
 
