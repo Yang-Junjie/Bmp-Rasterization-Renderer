@@ -1,4 +1,3 @@
-#include "matrix3x3.hpp"
 
 #include "matrix3x3.hpp"
 
@@ -13,13 +12,19 @@
 	{
 	}
 
-	Matrix3x3::Matrix3x3(const real& col1_x, const real& col1_y, const real& col1_z, const real& col2_x,
+    Matrix3x3::Matrix3x3(ByRows, const oeVec3 &row1, const oeVec3 &row2, const oeVec3 &row3):column1(row1.x, row2.x, row3.x),
+      column2(row1.y, row2.y, row3.y),
+      column3(row1.z, row2.z, row3.z)
+     {}
+    
+
+    Matrix3x3::Matrix3x3(const real& col1_x, const real& col1_y, const real& col1_z, const real& col2_x,
 	                     const real& col2_y, const real& col2_z, const real& col3_x, const real& col3_y,
 	                     const real& col3_z)
 		: column1(col1_x, col1_y, col1_z), column2(col2_x, col2_y, col2_z), column3(col3_x, col3_y, col3_z)
 	{
 	}
-
+	
 	Matrix3x3& Matrix3x3::operator=(const Matrix3x3& rhs)
 	{
 		if (&rhs == this)

@@ -4,6 +4,7 @@
 #include "matrix3x3.hpp"
  struct  Matrix4x4
 {
+    struct ByRows {};
     Matrix4x4() = default;
     Matrix4x4(const oeVec4& col1, const oeVec4& col2, const oeVec4& col3, const oeVec4& col4);
 
@@ -11,16 +12,10 @@
         const real& col2_x, const real& col2_y, const real& col2_z, const real& col2_w,
         const real& col3_x, const real& col3_y, const real& col3_z, const real& col3_w,
         const real& col4_x, const real& col4_y, const real& col4_z, const real& col4_w);
-
+    Matrix4x4(ByRows, const oeVec4& row1, const oeVec4& row2, const oeVec4& row3, const oeVec4& row4);
     Matrix4x4(const Matrix3x3& mat);
     Matrix4x4(const Matrix4x4& mat) = default;
-    friend std::ostream& operator<<(std::ostream& os,  Matrix4x4& p) {
-        os << "{" << p.e11() << " " << p.e12()<<" " << p.e13()<<" " << p.e14() <<'\n'
-       << "{" << p.e21() << " " << p.e22()<<" " << p.e23()<<" " << p.e24() <<'\n'
-      << "{" << p.e31() << " " << p.e32()<<" " << p.e33()<<" " << p.e34() <<'\n'
-        << "{" << p.e41() << " " << p.e42()<<" " << p.e43()<<" " << p.e44() <<'\n';
-        return os; 
-    }
+    
 
     Matrix4x4(Matrix4x4&& other) = default;
 

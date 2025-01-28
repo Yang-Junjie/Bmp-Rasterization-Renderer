@@ -5,9 +5,11 @@
 #include "vector2d.hpp"
 struct  Matrix3x3
 {
+    struct ByRows {};
     Matrix3x3() = default;
     Matrix3x3(const Matrix3x3& mat);
     Matrix3x3(const oeVec3& col1, const oeVec3& col2, const oeVec3& col3);
+    Matrix3x3(ByRows,const oeVec3& row1, const oeVec3& row2, const oeVec3& row3);
     Matrix3x3(const real& col1_x, const real& col1_y, const real& col1_z,
         const real& col2_x, const real& col2_y, const real& col2_z,
         const real& col3_x, const real& col3_y, const real& col3_z);

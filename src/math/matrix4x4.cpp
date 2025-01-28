@@ -14,6 +14,12 @@ Matrix4x4::Matrix4x4(const real& col1_x, const real& col1_y, const real& col1_z,
     column4(col4_x, col4_y, col4_z, col4_w)
 {
 }
+Matrix4x4::Matrix4x4(ByRows, const oeVec4& row1, const oeVec4& row2, const oeVec4& row3, const oeVec4& row4)
+    : column1(row1.x, row2.x, row3.x, row4.x),
+      column2(row1.y, row2.y, row3.y, row4.y),
+      column3(row1.z, row2.z, row3.z, row4.z),
+      column4(row1.t, row2.t, row3.t, row4.t)
+{}
 Matrix4x4::Matrix4x4(const Matrix3x3& mat)
     :column1(mat.column1.x, mat.column1.y, mat.column1.z, 0),
     column2(mat.column2.x, mat.column2.y, mat.column2.z, 0),
