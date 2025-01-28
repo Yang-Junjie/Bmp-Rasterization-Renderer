@@ -1,7 +1,8 @@
-#pragma once 
+#ifndef DRAW_HPP
+#define DRAW_HPP
 #include "bmp.hpp"
-#include "vector2d.hpp"
 #include <tuple>
+#include "oe_math.hpp"
 
 class Draw{
 private:
@@ -25,5 +26,8 @@ public :
   
   
     void DrawRectangle(int x,int y,int width,int height);
+    
     void DrawTriangle(const oeVec2& veticex1,const oeVec2& veticex2,const oeVec2& veticex3);
+    void DrawPolygon(oeVec2 vertices[], size_t vertices_num,size_t index[],size_t index_num);
 };
+#endif

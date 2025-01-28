@@ -18,10 +18,10 @@
      {}
     
 
-    Matrix3x3::Matrix3x3(const real& col1_x, const real& col1_y, const real& col1_z, const real& col2_x,
-	                     const real& col2_y, const real& col2_z, const real& col3_x, const real& col3_y,
-	                     const real& col3_z)
-		: column1(col1_x, col1_y, col1_z), column2(col2_x, col2_y, col2_z), column3(col3_x, col3_y, col3_z)
+    Matrix3x3::Matrix3x3(const real& row1_x, const real& row1_y, const real& row1_z, 
+						 const real& row2_x, const real& row2_y, const real& row2_z,
+						 const real& row3_x, const real& row3_y, const real& row3_z)
+		: column1(row1_x, row2_x, row3_x), column2(row1_y, row2_y, row3_y), column3(row1_z, row2_z, row3_z)
 	{
 	}
 	

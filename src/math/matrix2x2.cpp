@@ -10,10 +10,11 @@ Matrix2x2::Matrix2x2(const oeVec2 &col1, const oeVec2 &col2):column1(col1),colum
 {
 }
 
-Matrix2x2::Matrix2x2(const real &col1_x, const real &col1_y, const real &col2_x, const real &col2_y)
+Matrix2x2::Matrix2x2(const real &row1_x, const real &row1_y,
+                     const real &row2_x, const real &row2_y)
 {
-   column1 = { col1_x , col1_y };
-   column2 = { col2_x , col2_y };
+   column1 = { row1_x , row2_x };
+   column2 = { row1_y , row2_y };
 }
 
 Matrix2x2 &Matrix2x2::operator=(const Matrix2x2 &rhs)

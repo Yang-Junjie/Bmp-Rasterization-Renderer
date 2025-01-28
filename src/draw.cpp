@@ -121,3 +121,26 @@ void Draw::DrawTriangle(const oeVec2& vertex1,const oeVec2& vertex2,const oeVec2
         }
     }
 }
+
+void Draw::DrawPolygon(oeVec2 vertices[], size_t vertices_num, size_t indices[], size_t indices_num) {
+    
+
+    for (size_t i = 0; i + 2 < indices_num; i += 3) {
+       
+        const size_t idx0 = indices[i];
+        const size_t idx1 = indices[i+1];
+        const size_t idx2 = indices[i+2];
+        
+       
+        if (idx0 >= vertices_num || idx1 >= vertices_num || idx2 >= vertices_num) {
+            continue; 
+        }
+        
+       
+        const oeVec2& v0 = vertices[idx0];
+        const oeVec2& v1 = vertices[idx1];
+        const oeVec2& v2 = vertices[idx2];
+        
+        DrawTriangle(v0, v1, v2);
+    }
+}

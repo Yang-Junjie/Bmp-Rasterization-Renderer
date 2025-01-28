@@ -7,18 +7,22 @@ Matrix4x4::Matrix4x4(const oeVec4& col1, const oeVec4& col2, const oeVec4& col3,
     :column1(col1), column2(col2), column3(col3), column4(col4)
 {
 }
-Matrix4x4::Matrix4x4(const real& col1_x, const real& col1_y, const real& col1_z, const real& col1_w, const real& col2_x, const real& col2_y, const real& col2_z, const real& col2_w, const real& col3_x, const real& col3_y, const real& col3_z, const real& col3_w, const real& col4_x, const real& col4_y, const real& col4_z, const real& col4_w)
-    : column1(col1_x, col1_y, col1_z, col1_w),
-    column2(col2_x, col2_y, col2_z, col2_w),
-    column3(col3_x, col3_y, col3_z, col3_w),
-    column4(col4_x, col4_y, col4_z, col4_w)
+Matrix4x4::Matrix4x4(const real& row1_x, const real& row1_y, const real& row1_z, const real& row1_w,
+                     const real& row2_x, const real& row2_y, const real& row2_z, const real& row2_w,
+                     const real& row3_x, const real& row3_y, const real& row3_z, const real& row3_w,
+                     const real& row4_x, const real& row4_y, const real& row4_z, const real& row4_w)
+  : column1(row1_x, row2_x, row3_x, row4_x),
+    column2(row1_y, row2_y, row3_y, row4_y),
+    column3(row1_z, row2_z, row3_z, row4_z),
+    column4(row1_w, row2_w, row3_w, row4_w)
 {
 }
+
 Matrix4x4::Matrix4x4(ByRows, const oeVec4& row1, const oeVec4& row2, const oeVec4& row3, const oeVec4& row4)
     : column1(row1.x, row2.x, row3.x, row4.x),
       column2(row1.y, row2.y, row3.y, row4.y),
       column3(row1.z, row2.z, row3.z, row4.z),
-      column4(row1.t, row2.t, row3.t, row4.t)
+      column4(row1.w, row2.w, row3.w, row4.w)
 {}
 Matrix4x4::Matrix4x4(const Matrix3x3& mat)
     :column1(mat.column1.x, mat.column1.y, mat.column1.z, 0),
@@ -101,8 +105,8 @@ oeVec4 Matrix4x4::row3() const
 
 oeVec4 Matrix4x4::row4() const
 {
-    return oeVec4(column1.t, column2.t,
-        column3.t, column4.t);
+    return oeVec4(column1.w, column2.w,
+        column3.w, column4.w);
 }
 
 real& Matrix4x4::e11()
@@ -122,7 +126,7 @@ real& Matrix4x4::e13()
 
 real& Matrix4x4::e14()
 {
-    return column1.t;
+    return column1.w;
 }
 
 real& Matrix4x4::e21()
@@ -142,7 +146,7 @@ real& Matrix4x4::e23()
 
 real& Matrix4x4::e24()
 {
-    return column2.t;
+    return column2.w;
 }
 
 real& Matrix4x4::e31()
@@ -162,7 +166,7 @@ real& Matrix4x4::e33()
 
 real& Matrix4x4::e34()
 {
-    return column3.t;
+    return column3.w;
 }
 
 real& Matrix4x4::e41()
@@ -182,7 +186,7 @@ real& Matrix4x4::e43()
 
 real& Matrix4x4::e44()
 {
-    return column4.t;
+    return column4.w;
 }
 
 Matrix4x4& Matrix4x4::set(const real& col1_x, const real& col1_y, const real& col1_z, const real& col1_w,
@@ -253,11 +257,11 @@ Matrix4x4& Matrix4x4::transpose()
 {
     std::swap(column1.y, column2.x);
     std::swap(column1.z, column3.x);
-    std::swap(column1.t, column4.x);
+    std::swap(column1.w, column4.x);
     std::swap(column2.z, column3.y);
-    std::swap(column2.t, column4.y);
+    std::swap(column2.w, column4.y);
 
-    std::swap(column3.t, column4.z);
+    std::swap(column3.w, column4.z);
     return *this;
 }
 
@@ -287,29 +291,29 @@ Matrix4x4 Matrix4x4::multiply(const Matrix4x4& lhs, const Matrix4x4& rhs)
 oeVec4 Matrix4x4::multiply(const Matrix4x4& lhs, const oeVec4& rhs)
 {
     return {
-        lhs.column1.x * rhs.x + lhs.column2.x * rhs.y + lhs.column3.x * rhs.z + lhs.column4.x * rhs.t,
-        lhs.column1.y * rhs.x + lhs.column2.y * rhs.y + lhs.column3.y * rhs.z + lhs.column4.y * rhs.t,
-        lhs.column1.z * rhs.x + lhs.column2.z * rhs.y + lhs.column3.z * rhs.z + lhs.column4.z * rhs.t,
-        lhs.column1.t * rhs.x + lhs.column2.t * rhs.y + lhs.column3.t * rhs.z + lhs.column4.t * rhs.t
+        lhs.column1.x * rhs.x + lhs.column2.x * rhs.y + lhs.column3.x * rhs.z + lhs.column4.x * rhs.w,
+        lhs.column1.y * rhs.x + lhs.column2.y * rhs.y + lhs.column3.y * rhs.z + lhs.column4.y * rhs.w,
+        lhs.column1.z * rhs.x + lhs.column2.z * rhs.y + lhs.column3.z * rhs.z + lhs.column4.z * rhs.w,
+        lhs.column1.w * rhs.x + lhs.column2.w * rhs.y + lhs.column3.w * rhs.z + lhs.column4.w * rhs.w
     };
 }
 
 real Matrix4x4::determinant(const Matrix4x4& mat)
 {
     const real det11 = Matrix3x3::determinant({
-        mat.column2.y, mat.column2.z, mat.column2.t,
-    mat.column3.y, mat.column3.z, mat.column3.t ,
-    mat.column4.y, mat.column4.z, mat.column4.t });
+        mat.column2.y, mat.column2.z, mat.column2.w,
+    mat.column3.y, mat.column3.z, mat.column3.w ,
+    mat.column4.y, mat.column4.z, mat.column4.w });
 
     const real det21 = -Matrix3x3::determinant({
-        mat.column2.x, mat.column2.z, mat.column2.t,
-    mat.column3.x, mat.column3.z, mat.column3.t ,
-    mat.column4.x, mat.column4.z, mat.column4.t });
+        mat.column2.x, mat.column2.z, mat.column2.w,
+    mat.column3.x, mat.column3.z, mat.column3.w ,
+    mat.column4.x, mat.column4.z, mat.column4.w });
 
     const real det31 = Matrix3x3::determinant({
-        mat.column2.x, mat.column2.y, mat.column2.t,
-    mat.column3.x, mat.column3.y, mat.column3.t ,
-    mat.column4.x, mat.column4.y, mat.column4.t });
+        mat.column2.x, mat.column2.y, mat.column2.w,
+    mat.column3.x, mat.column3.y, mat.column3.w ,
+    mat.column4.x, mat.column4.y, mat.column4.w });
 
     const real det41 = -Matrix3x3::determinant({
         mat.column2.x, mat.column2.y, mat.column2.z,
@@ -319,7 +323,7 @@ real Matrix4x4::determinant(const Matrix4x4& mat)
     return mat.column1.x * det11 +
         mat.column1.y * det21 +
         mat.column1.z * det31 +
-        mat.column1.t * det41;
+        mat.column1.w * det41;
 }
 
 bool Matrix4x4::invert(Matrix4x4& mat)

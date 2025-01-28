@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BMP_HPP
+#define BMP_HPP
 #include <fstream>
 #include <vector>
 #include <cstdint>
@@ -40,3 +41,4 @@ private:
     size_t row_stride;
     std::vector<uint8_t> data;
 };
+#endif

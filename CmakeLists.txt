@@ -1,25 +1,17 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(bmp)
 
-# 设置源代码和头文件目录
+# 设置源代码和头文件的路径
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src/)
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/)
 set(MATH_SRC_DIR ${SRC_DIR}/math/)
 
-# 包含头文件目录
+# 添加头文件目录
 include_directories(${INCLUDE_DIR})
+include_directories(${INCLUDE_DIR}/math)
 
-# 查找所有源文件并添加到可执行文件中
+# 收集所有源文件
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 
-# 手动列出所有源文件（推荐）
-# set(SOURCES 
-#     ${MATH_SRC_DIR}/matrix2x2.cpp
-#     # 添加其他.cpp文件
-# )
-
-# 添加可执行文件
+# 创建可执行文件
 add_executable(bmp ${SOURCES})
-
-# 如果有额外的库需要链接，可以在这里添加
-# target_link_libraries(bmp your_library_name)
