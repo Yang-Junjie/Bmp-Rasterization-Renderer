@@ -6,33 +6,18 @@
 #include "camera.hpp"
 
 int main() {
-    const real width = 256;
-    const real height = 256;
+    const real width = 512;
+    const real height = 512;
     Bmp image(width, height);
     Draw draw(&image);
     
     draw.SetColor(0,0,0);
     draw.SpreadBackground();
     draw.SetColor(255,0,255);
-
     
-     oeVec2 polygonVertices[] = {
-        oeVec2(100, 100),  
-        oeVec2(200, 100),  
-        oeVec2(200, 200),  
-        oeVec2(100, 200)   
-    };
 
-   
-    size_t triangleIndices[] = {
-        0, 1, 2,  
-        0, 2, 3   
-    };
-
-   
-    draw.SetColor(255, 0, 0);
-    draw.DrawPolygon(polygonVertices,4,triangleIndices,6);
-    
+    draw.SetColor(255, 255, 0);
+    draw.DrawTriangle(oeVec2(-150, -150),255,0,0,oeVec2(150, -150),0,255,0, oeVec2(0, 0),0,0,255);
     
     image.save("output.bmp");
     return 0;

@@ -3,11 +3,6 @@
 
 namespace Transform {
 
-    // 2D变换函数
-    void CoordChange(oeVec2& v, const real& width, const real& height) {
-        v.y = -v.y + height / 2.0;
-        v.x = v.x + width / 2.0;
-    }
 
     void ApplyMatrixToVertices(oeVec2 vertex[], const size_t& vertices_num, const Matrix2x2& mat) {
         for (size_t i = 0; i < vertices_num; ++i) {
@@ -95,4 +90,21 @@ namespace Transform {
                          rotMat.e31(), rotMat.e32(), rotMat.e33(), 0,
                          0, 0, 0, 1);
     }
+
+    Matrix4x4 OrthographicProjection(real left, real right, real bottom, real top, real near, real far) {
+    real invWidth = 1.0 / (right - left);
+    real invHeight = 1.0 / (top - bottom);
+    real invDepth = 1.0 / (far - near);
+
+    real tx = -(right + left) * invWidth;
+    real ty = -(top + bottom) * invHeight;
+    real tz = -(far + near) * invDepth;
+
+    return Matrix4x4(
+        2 * invWidth, 0, 0, tx,
+        0, 2 * invHeight, 0, ty,
+        0, 0, -2 * invDepth, tz,
+        0, 0, 0, 1
+    );
+}
 }

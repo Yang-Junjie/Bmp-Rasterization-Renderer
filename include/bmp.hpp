@@ -35,7 +35,7 @@ public:
     bool save(const std::string& path) const;
     int GetWidth();
     int GetHeight();
-
+    void SetData(const std::vector<uint8_t>& newData);
 private:
     int width, height;
     size_t row_stride;

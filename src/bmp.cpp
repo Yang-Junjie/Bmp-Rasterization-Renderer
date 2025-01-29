@@ -32,6 +32,12 @@ int Bmp::GetHeight()
 {
     return this->height;
 }
+void Bmp::SetData(const std::vector<uint8_t>& newData) {
+    if (newData.size() == this->data.size()) {
+        data = newData;
+    }
+}
+
 void Bmp::setPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b)
 {
     if (x < 0 || x >= width || y < 0 || y >= height)

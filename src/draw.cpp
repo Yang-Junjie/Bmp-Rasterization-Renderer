@@ -1,6 +1,6 @@
 #include "draw.hpp"
 #include "vector2d.hpp"
-
+#include <algorithm>
 bool InsideTriangle(oeVec2 A, oeVec2 B, oeVec2 C, oeVec2 P) {
     auto sign = [](oeVec2 p1, oeVec2 p2, oeVec2 p3) {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
@@ -16,24 +16,26 @@ bool InsideTriangle(oeVec2 A, oeVec2 B, oeVec2 C, oeVec2 P) {
     return !(has_neg && has_pos);
 }
 
-Draw::Draw(Bmp *bmp):m_bmp(bmp)
+inline std::pair<int, int> Draw::ConvertCoordinate(int x_user, int y_user)
 {
+     
+    int x_bmp = x_user + m_center_x;
+    int y_bmp = m_center_y - y_user - 1;
+    return {x_bmp, y_bmp};
+    
+}
+
+Draw::Draw(Bmp *bmp) : m_bmp(bmp)
+{
+    m_center_x = bmp->GetWidth() / 2;
+    m_center_y = bmp->GetHeight() / 2;
 }
 
 Draw::~Draw()
 {
 }
 
-void Draw::SetPosition(int x, int y)
-{
-    this->_x = x;
-    this->_y = y;
-}
 
-std::tuple<int, int> Draw::GetPosition()
-{
-    return std::tuple<int, int>(this->_x,this->_y);
-}
 
 void Draw::SetColor(int r, int g, int b)
 {
@@ -56,23 +58,27 @@ void Draw::SpreadBackground()
     }
 }
 
-void Draw::DrawPoint(int x,int y)
-{
-    
-    m_bmp->setPixel(x, y, this->r,this->g,this->b);  
+void Draw::DrawPoint(int x, int y) {
+    auto [x_bmp, y_bmp] = ConvertCoordinate(x, y);
+    if (x_bmp < 0 || x_bmp >= m_bmp->GetWidth() || 
+        y_bmp < 0 || y_bmp >= m_bmp->GetHeight()) {
+        return;
+    }
+    m_bmp->setPixel(x_bmp, y_bmp, this->r, this->g, this->b);
 }
 
-void Draw::DrawLineBresenham(int x0, int y0, int x1, int y1)
-{
+void Draw::DrawLineBresenham(int x0, int y0, int x1, int y1) {
     int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
     int dy = abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-    int erro = (dx > dy ? dx : -dy) / 2;
- 
-    while(m_bmp->setPixel(x0,y0,this->r,this->g,this->b), x0 != x1 || y0 != y1){
-        int e2 = erro;
-        if(e2 > -dx) { erro -= dy; x0 += sx;}
-        if(e2 <  dy) { erro += dx; y0 += sy;}
-    } 
+    int err = (dx > dy ? dx : -dy) / 2;
+
+    while (true) {
+        DrawPoint(x0, y0); 
+        if (x0 == x1 && y0 == y1) break;
+        int e2 = err;
+        if (e2 > -dx) { err -= dy; x0 += sx; }
+        if (e2 < dy) { err += dx; y0 += sy; }
+    }
 }
 
 void Draw::DrawLineDDA(int x0, int y0, int x1, int y1)
@@ -84,7 +90,7 @@ void Draw::DrawLineDDA(int x0, int y0, int x1, int y1)
 	yIncre = (float)(dy) / epslion;
 	
 	for (int k = 0; k <= epslion; k++) {
-        m_bmp->setPixel(x,y,this->r,this->g,this->b);
+         DrawPoint(x0, y0); 
 		x += xIncre;   y += yIncre; 
 	}
 }
@@ -93,31 +99,70 @@ void Draw::DrawRectangle(int x, int y, int width, int height)
 {
     for(int i = x;i<=x+width;i++){
         for(int j = y;j<=y+height;j++){
-             m_bmp->setPixel(i,j,this->r,this->g,this->b);
+            DrawPoint(x, y); 
         }
     }
 }
 
-void Draw::DrawTriangle(const oeVec2& vertex1,const oeVec2& vertex2,const oeVec2& vertex3)
-{
-    int max_x = (vertex1.x > vertex2.x) ? ((vertex1.x > vertex2.x) ? vertex1.x : vertex3.x) : ((vertex2.x > vertex3.x) ? vertex2.x : vertex3.x);
-    int max_y = (vertex1.y > vertex2.y) ? ((vertex1.y > vertex2.y) ? vertex1.y : vertex3.y) : ((vertex2.y > vertex3.y) ? vertex2.y : vertex3.y);
+void Draw::DrawTriangle(const oeVec2& vertex1, int r1, int g1, int b1,
+                        const oeVec2& vertex2, int r2, int g2, int b2,
+                        const oeVec2& vertex3, int r3, int g3, int b3) {
+   
 
    
+    double denominator = (vertex2.x - vertex1.x) * (vertex3.y - vertex1.y) - (vertex3.x - vertex1.x) * (vertex2.y - vertex1.y);
+    if (denominator == 0) {
+        return; 
+    }
+
+    
+    int max_x = (vertex1.x > vertex2.x) ?
+        ((vertex1.x > vertex2.x) ? vertex1.x : vertex3.x) :
+        ((vertex2.x > vertex3.x) ? vertex2.x : vertex3.x);
+    int max_y = (vertex1.y > vertex2.y) ? 
+        ((vertex1.y > vertex2.y) ? vertex1.y : vertex3.y) :
+        ((vertex2.y > vertex3.y) ? vertex2.y : vertex3.y);
     int min_x = (vertex1.x < vertex2.x) ? 
         ((vertex1.x < vertex3.x) ? vertex1.x : vertex3.x) : 
         ((vertex2.x < vertex3.x) ? vertex2.x : vertex3.x);
-
-    
     int min_y = (vertex1.y < vertex2.y) ? 
         ((vertex1.y < vertex3.y) ? vertex1.y : vertex3.y) : 
         ((vertex2.y < vertex3.y) ? vertex2.y : vertex3.y);
+   
 
-    for(int x = min_x;x<=max_x;x ++){
-        for(int y = min_y;y<=max_y;y ++){
-        if(InsideTriangle(vertex1,vertex2,vertex3,oeVec2(x,y))){
-            m_bmp->setPixel(x,y,this->r,this->g,this->b);
-        };
+    for (int x = min_x; x <= max_x; ++x) {
+        for (int y = min_y; y <= max_y; ++y) {
+            oeVec2 P(x, y);
+            if (InsideTriangle(vertex1, vertex2, vertex3, P)) {
+                auto sign = [](oeVec2 p1, oeVec2 p2, oeVec2 p3) {
+                    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+                };
+                double d1 = sign(P, vertex1, vertex2);
+                double d2 = sign(P, vertex2, vertex3);
+                double d3 = sign(P, vertex3, vertex1);
+
+                // 计算重心坐标
+                double u = d2 / denominator;
+                double v = d3 / denominator;
+                double w = d1 / denominator;
+
+                // 颜色插值
+                int red = static_cast<int>(u * r1 + v * r2 + w * r3);
+                int green = static_cast<int>(u * g1 + v * g2 + w * g3);
+                int blue = static_cast<int>(u * b1 + v * b2 + w * b3);
+
+                // 限制颜色范围
+                red = std::clamp(red, 0, 255);
+                green = std::clamp(green, 0, 255);
+                blue = std::clamp(blue, 0, 255);
+
+                // 转换坐标并设置像素颜色
+                auto [x_bmp, y_bmp] = ConvertCoordinate(x, y);
+                if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
+                    y_bmp >= 0 && y_bmp < m_bmp->GetHeight()) {
+                    m_bmp->setPixel(x_bmp, y_bmp, red, green, blue);
+                }
+            }
         }
     }
 }
@@ -135,12 +180,10 @@ void Draw::DrawPolygon(oeVec2 vertices[], size_t vertices_num, size_t indices[],
         if (idx0 >= vertices_num || idx1 >= vertices_num || idx2 >= vertices_num) {
             continue; 
         }
-        
-       
         const oeVec2& v0 = vertices[idx0];
         const oeVec2& v1 = vertices[idx1];
         const oeVec2& v2 = vertices[idx2];
         
-        DrawTriangle(v0, v1, v2);
+        DrawTriangle(v0,r,g,b ,v1,r,g,b ,v2,r,g,b);
     }
 }
