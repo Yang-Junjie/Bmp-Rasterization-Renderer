@@ -71,6 +71,7 @@
     
     static Matrix4x4 identityMatrix();
     static Matrix4x4 multiply(const Matrix4x4& lhs, const Matrix4x4& rhs);
+    
     static oeVec4 multiply(const Matrix4x4& lhs, const oeVec4& rhs);
     static real determinant(const Matrix4x4& mat);
     static bool invert(Matrix4x4& mat);

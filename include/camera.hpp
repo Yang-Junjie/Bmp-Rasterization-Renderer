@@ -3,28 +3,26 @@
 class Camera {
     public:
         oeVec3 m_e;     
-        oeVec3 m_g; 
-        oeVec3 m_t;  
+       // oeVec3 m_g; 
+       // oeVec3 m_t;  
 
-        Camera(const oeVec3& e, const oeVec3& g, const oeVec3& t)
-            : m_e(e), m_g(g), m_t(t) {}
-        Matrix4x4 GetViewMatrix() const {
-       
-        oeVec3 f = (m_g - m_e).normalize();
-
-       
-        oeVec3 s = f.cross(m_t).normalize();
-
-       
-        oeVec3 u_new = s.cross(f);
-
+        Camera(const oeVec3& e): m_e(e) {}
         
-        return Matrix4x4(
-            s.x, s.y, s.z, -s.dot(m_e),
-            u_new.x, u_new.y, u_new.z, -u_new.dot(m_e),
-            -f.x, -f.y, -f.z, f.dot(m_e),
-            0, 0, 0, 1
-        );
+       // oeVec3 w = -m_g.normalize();
+       // oeVec3 u = (m_t.cross(w)).normalize();
+       // oeVec3 v = w.cross(u);
+
+
+    Matrix4x4 GetViewMatrix() const {
+        Matrix4x4 view = Matrix4x4::identityMatrix();   
+        Matrix4x4 translate;
+        translate ={ 1, 0, 0, -m_e.x,
+                     0, 1, 0, -m_e.y,
+                     0, 0, 1, -m_e.z,
+                     0, 0, 0, 1};
+
+        view = translate.multiply(view);;
+        return view;    
     }
         
     };

@@ -3,7 +3,6 @@
 
 namespace Transform {
 
-
     void ApplyMatrixToVertices(oeVec2 vertex[], const size_t& vertices_num, const Matrix2x2& mat) {
         for (size_t i = 0; i < vertices_num; ++i) {
             vertex[i] = mat.multiply(vertex[i]);
@@ -91,20 +90,55 @@ namespace Transform {
                          0, 0, 0, 1);
     }
 
-    Matrix4x4 OrthographicProjection(real left, real right, real bottom, real top, real near, real far) {
-    real invWidth = 1.0 / (right - left);
-    real invHeight = 1.0 / (top - bottom);
-    real invDepth = 1.0 / (far - near);
+    static Matrix4x4 lookAt(const oeVec3& eye, const oeVec3& target, const oeVec3& up) {
+        oeVec3 f = (target - eye).normalize();
+        oeVec3 r = oeVec3::cross(f, up).normalize();
+        oeVec3 u = oeVec3::cross(r, f);
 
-    real tx = -(right + left) * invWidth;
-    real ty = -(top + bottom) * invHeight;
-    real tz = -(far + near) * invDepth;
+        Matrix4x4 mat;
+        mat.column1 = oeVec4(r.x, u.x, -f.x, 0);
+        mat.column2 = oeVec4(r.y, u.y, -f.y, 0);
+        mat.column3 = oeVec4(r.z, u.z, -f.z, 0);
+        mat.column4 = oeVec4(-r.dot(eye), -u.dot(eye), f.dot(eye), 1);
+        return mat;
+    }
 
-    return Matrix4x4(
-        2 * invWidth, 0, 0, tx,
-        0, 2 * invHeight, 0, ty,
-        0, 0, -2 * invDepth, tz,
-        0, 0, 0, 1
-    );
-}
+    Matrix4x4 perspective(real fov, real aspect, real near, real far) {
+        real tanHalfFov = tan(fov / 2);
+        Matrix4x4 mat = Matrix4x4::identityMatrix();
+        mat={1 / (aspect * tanHalfFov),             0,                             0, 0,
+             0                        ,1 / tanHalfFov,                             0, 0,
+             0                        ,             0,  -(far + near) / (far - near),-1,
+             0                        ,             0,-2 * far * near / (far - near), 0};
+        return mat;
+    }
+
+    Matrix4x4 get_projection_matrix(real eye_fov, real aspect_ratio,
+                                      real zNear, real zFar)//投影变换矩阵
+    {
+        Matrix4x4 projection = Matrix4x4::identityMatrix();
+
+        
+        Matrix4x4 proj, ortho;
+
+        proj ={ zNear, 0, 0, 0,
+                0, zNear, 0, 0,
+                0, 0, zNear + zFar, -zNear * zFar,
+                0, 0, 1, 0};//透视投影矩阵
+
+        double w, h, z;
+        h = zNear * tan(eye_fov / 2) * 2;
+        w = h * aspect_ratio;
+        z = zFar - zNear;
+
+        ortho  = {2 / w, 0, 0, 0,
+                0, 2 / h, 0, 0,
+                0, 0, 2 / z, -(zFar+zNear) / 2,
+                0, 0, 0, 1};//正交投影矩阵，因为在观测投影时x0y平面视角默认是中心，所以这里的正交投影就不用平移x和y了
+                                
+        projection = ortho.multiply(proj.multiply( projection));
+
+        return projection;
+    }
+
 }

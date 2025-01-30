@@ -8,17 +8,26 @@
 int main() {
     const real width = 512;
     const real height = 512;
-    Bmp image(width, height);
-    Draw draw(&image);
-    
-    draw.SetColor(0,0,0);
-    draw.SpreadBackground();
-    draw.SetColor(255,0,255);
-    
+    Bmp bmp(width, height);
+    Rasterizer draw(&bmp);
+    draw.SetColor(255, 0, 0);
 
-    draw.SetColor(255, 255, 0);
-    draw.DrawTriangle(oeVec2(-150, -150),255,0,0,oeVec2(150, -150),0,255,0, oeVec2(0, 0),0,0,255);
-    
-    image.save("output.bmp");
+    // 设置相机
+    Camera camera(oeVec3(0, 0, 3));
+
+    std::vector<oeVec3> pos{{2, 0, -2}, {0, 2, -2}, {-2, 0, -2}};
+
+    std::vector<oeVec3> ind{{0, 1, 2}};
+
+    auto pos_id = draw.load_positions(pos);
+    auto ind_id = draw.load_indices(ind);
+
+    draw.SetModelMatrix(Transform::Rotation4x4(0,0,0));
+    draw.SetViewMatrix(camera.GetViewMatrix());
+    draw.SetProjMatrix(Transform::get_projection_matrix(45, 1, 0.1, 50));
+
+    draw.draw(pos_id, ind_id, Primitive::Triangle);
+
+    bmp.save("output.bmp");
     return 0;
 }

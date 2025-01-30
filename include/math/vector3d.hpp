@@ -118,7 +118,7 @@ struct oeVec3
         }
         return { 0.0f, 0.0f ,0.0f};
     }
-
+   
 
     real dot(const oeVec3& v) const {
         return this->x * v.x + this->y * v.y+this->z * v.z;
@@ -134,6 +134,15 @@ struct oeVec3
             y * v.z - z * v.y,
             z * v.x - x * v.z,
             x * v.y - y * v.x
+        );
+    }
+
+    // 叉乘
+    static oeVec3 cross(const oeVec3& v1,const oeVec3& v2)  {
+        return oeVec3(
+            v2.y * v1.z - v2.z * v1.y,
+            v2.z * v1.x - v2.x * v1.z,
+            v2.x * v1.y - v2.y * v1.x
         );
     }
     real LengthSquared() const {

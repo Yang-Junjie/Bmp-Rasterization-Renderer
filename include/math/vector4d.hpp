@@ -12,7 +12,7 @@ struct oeVec4
     real w;
     oeVec4() :x(0.0f), y(0.0f),z(0.0f),w(0.0f) {};
     oeVec4(const real& x, const real& y,const real& z,const real& t) : x(x), y(y),z(z),w(t){}
-    
+    oeVec4(const oeVec3& v, const real& t) : x(v.x), y(v.y),z(v.z),w(t){}
     static oeVec4 Zero() {
         return oeVec4{ 0.0f,0.0f ,0.0f,0.0f};
     }

@@ -237,10 +237,7 @@ Matrix4x4& Matrix4x4::clear()
     return *this;
 }
 
-oeVec4 Matrix4x4::multiply(const oeVec4& rhs) const
-{
-    return multiply(*this, rhs);
-}
+
 
 Matrix4x4& Matrix4x4::multiply(const Matrix4x4& rhs)
 {
@@ -296,6 +293,16 @@ oeVec4 Matrix4x4::multiply(const Matrix4x4& lhs, const oeVec4& rhs)
         lhs.column1.z * rhs.x + lhs.column2.z * rhs.y + lhs.column3.z * rhs.z + lhs.column4.z * rhs.w,
         lhs.column1.w * rhs.x + lhs.column2.w * rhs.y + lhs.column3.w * rhs.z + lhs.column4.w * rhs.w
     };
+}
+
+
+oeVec4 Matrix4x4::multiply(const oeVec4& rhs) const {
+    return oeVec4(
+        column1.x*rhs.x + column2.x*rhs.y + column3.x*rhs.z + column4.x*rhs.w,
+        column1.y*rhs.x + column2.y*rhs.y + column3.y*rhs.z + column4.y*rhs.w,
+        column1.z*rhs.x + column2.z*rhs.y + column3.z*rhs.z + column4.z*rhs.w,
+        column1.w*rhs.x + column2.w*rhs.y + column3.w*rhs.z + column4.w*rhs.w
+    );
 }
 
 real Matrix4x4::determinant(const Matrix4x4& mat)
