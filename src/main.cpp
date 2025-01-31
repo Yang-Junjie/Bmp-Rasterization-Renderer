@@ -1,5 +1,5 @@
 #include "bmp.hpp"
-#include "draw.hpp"
+#include "Rasterizer.hpp"
 #include <iostream>
 #include "oe_math.hpp"
 #include "Transfrom.hpp"
@@ -13,7 +13,7 @@ int main() {
     draw.SetColor(255, 0, 0);
 
     // 设置相机
-    Camera camera(oeVec3(0, 0, 3));
+    Camera camera(oeVec3(0, 0, 10));
 
     std::vector<oeVec3> pos{{2, 0, -2}, {0, 2, -2}, {-2, 0, -2}};
 

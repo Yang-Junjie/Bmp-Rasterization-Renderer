@@ -120,11 +120,11 @@ namespace Transform {
 
         
         Matrix4x4 proj, ortho;
-
+    
         proj ={ zNear, 0, 0, 0,
                 0, zNear, 0, 0,
                 0, 0, zNear + zFar, -zNear * zFar,
-                0, 0, 1, 0};//透视投影矩阵
+                0, 0, -1, 0};
 
         double w, h, z;
         h = zNear * tan(eye_fov / 2) * 2;
@@ -134,7 +134,7 @@ namespace Transform {
         ortho  = {2 / w, 0, 0, 0,
                 0, 2 / h, 0, 0,
                 0, 0, 2 / z, -(zFar+zNear) / 2,
-                0, 0, 0, 1};//正交投影矩阵，因为在观测投影时x0y平面视角默认是中心，所以这里的正交投影就不用平移x和y了
+                0, 0, 0, 1};
                                 
         projection = ortho.multiply(proj.multiply( projection));
 
