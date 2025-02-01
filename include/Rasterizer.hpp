@@ -38,6 +38,12 @@ struct ind_buf_id
     int ind_id = 0;
 };
 
+struct SubSample {
+    int r = 0;
+    int g = 0;
+    int b = 0;
+};
+
 class Rasterizer{
 private:
     int _x,_y;
@@ -63,10 +69,11 @@ private:
     int next_id = 0;
     int get_next_id() { return next_id++; }
 
+    int msaaFactor; 
+    std::vector<std::vector<std::vector<SubSample>>> msaaBuffer;
+
 private:
     void DrawLineBresenham(const oeVec3& bigen , const oeVec3& end);
-    // void DrawLineDDA(int x0,int y0,int x1,int y1);
-
     void DrawRectangle(int x,int y,int width,int height);
     void DrawTriangle(const oeVec4& veticex1,int r1, int g1, int b1,
                       const oeVec4& veticex2,int r2, int g2, int b2,
@@ -91,7 +98,7 @@ public :
     void DrawPoint(int x0, int y0);
 
     void clear(Buffers buff);
-
+    void resolveMSAA();
     void draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, Primitive type);
    
     

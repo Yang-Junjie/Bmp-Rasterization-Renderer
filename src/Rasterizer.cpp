@@ -34,12 +34,14 @@ inline std::pair<int, int> Rasterizer::ConvertCoordinate(int x_user, int y_user)
     
 }
 
-Rasterizer::Rasterizer(Bmp *bmp) : m_bmp(bmp)
+Rasterizer::Rasterizer(Bmp *bmp) : m_bmp(bmp), msaaFactor(4)
 {
     m_center_x = bmp->GetWidth() / 2;
     m_center_y = bmp->GetHeight() / 2;
     width = bmp->GetWidth();
     height = bmp->GetHeight();
+    int samples = msaaFactor * msaaFactor;
+    msaaBuffer.resize(width, std::vector<std::vector<SubSample>>(height, std::vector<SubSample>(samples)));
 }
 
 Rasterizer::~Rasterizer()
@@ -106,7 +108,20 @@ void Rasterizer::clear(Buffers buff)
     }
 }
 
-
+void Rasterizer::resolveMSAA() {
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                int total_r = 0, total_g = 0, total_b = 0;
+                int samples = msaaFactor * msaaFactor;
+                for (int i = 0; i < samples; ++i) {
+                    total_r += msaaBuffer[x][y][i].r;
+                    total_g += msaaBuffer[x][y][i].g;
+                    total_b += msaaBuffer[x][y][i].b;
+                }
+                m_bmp->setPixel(x, y, total_r/samples, total_g/samples, total_b/samples);
+            }
+        }
+}
 
 int Rasterizer::get_index(int x, int y)
 {
@@ -133,19 +148,6 @@ void Rasterizer::DrawLineBresenham(const oeVec3 &begin, const oeVec3 &end)
     }
 }
 
-// void Rasterizer::DrawLineDDA(int x0, int y0, int x1, int y1)
-// {
-//     int  dx = x1 - x0, dy = y1 - y0, epslion;   
-// 	float  x = x0, y = y0, xIncre, yIncre;
-// 	epslion = abs(dx) > abs(dy) ?  abs(dx) : abs(dy);
-// 	xIncre = (float)(dx) / epslion;
-// 	yIncre = (float)(dy) / epslion;
-	
-// 	for (int k = 0; k <= epslion; k++) {
-//          DrawPoint(x0, y0); 
-// 		x += xIncre;   y += yIncre; 
-// 	}
-// }
 
 void Rasterizer::DrawRectangle(int x, int y, int width, int height)
 {
@@ -178,42 +180,55 @@ void Rasterizer::DrawTriangle(const oeVec4& vertex1, int r1, int g1, int b1,
 
     for (int x = start_x; x <= end_x; ++x) {
         for (int y = start_y; y <= end_y; ++y) {
-            oeVec2 P(x, y);
-            if (InsideTriangle(to_vec2(vertex1), to_vec2(vertex2), to_vec2(vertex3), P)) {
-                auto sign = [](oeVec2 p1, oeVec2 p2, oeVec2 p3) {
-                    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
-                };
+            for (int sx = 0; sx < msaaFactor; ++sx) {
+                for (int sy = 0; sy < msaaFactor; ++sy) {
+                    // 计算子样本点位置
+                    float px = x + (sx + 0.5f) / msaaFactor;
+                    float py = y + (sy + 0.5f) / msaaFactor;
+                    oeVec2 P(px, py);
+                    if (InsideTriangle(to_vec2(vertex1), to_vec2(vertex2), to_vec2(vertex3), P)) {
+                        auto sign = [](oeVec2 p1, oeVec2 p2, oeVec2 p3) {
+                            return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+                        };
 
-                double d1 = sign(P, to_vec2(vertex1), to_vec2(vertex2));
-                double d2 = sign(P, to_vec2(vertex2), to_vec2(vertex3));
-                double d3 = sign(P, to_vec2(vertex3), to_vec2(vertex1));
+                        double d1 = sign(P, to_vec2(vertex1), to_vec2(vertex2));
+                        double d2 = sign(P, to_vec2(vertex2), to_vec2(vertex3));
+                        double d3 = sign(P, to_vec2(vertex3), to_vec2(vertex1));
 
-                // 判断分母符号，确保面积比例正确
-                if (denominator < 0) {
-                    denominator = -denominator;
-                    d1 = -d1;
-                    d2 = -d2;
-                    d3 = -d3;
-                }
+                        // 判断分母符号，确保面积比例正确
+                        if (denominator < 0) {
+                            denominator = -denominator;
+                            d1 = -d1;
+                            d2 = -d2;
+                            d3 = -d3;
+                        }
 
-                double u = d2 / denominator;
-                double v = d3 / denominator;
-                double w = d1 / denominator;
+                        double u = d2 / denominator;
+                        double v = d3 / denominator;
+                        double w = d1 / denominator;
 
-                if (u >= 0 && u <= 1 && v >= 0 && v <= 1 && w >= 0 && w <= 1) {
-                    int red = static_cast<int>(u * r1 + v * r2 + w * r3);
-                    int green = static_cast<int>(u * g1 + v * g2 + w * g3);
-                    int blue = static_cast<int>(u * b1 + v * b2 + w * b3);
+                        if (u >= 0 && u <= 1 && v >= 0 && v <= 1 && w >= 0 && w <= 1) {
+                            int red = static_cast<int>(u * r1 + v * r2 + w * r3);
+                            int green = static_cast<int>(u * g1 + v * g2 + w * g3);
+                            int blue = static_cast<int>(u * b1 + v * b2 + w * b3);
 
-                    // 限制颜色范围
-                    red = std::clamp(red, 0, 255);
-                    green = std::clamp(green, 0, 255);
-                    blue = std::clamp(blue, 0, 255);
-                    auto [x_bmp, y_bmp] = ConvertCoordinate(x, y);
-                if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
-                    y_bmp >= 0 && y_bmp < m_bmp->GetHeight()) {
-                    m_bmp->setPixel(x_bmp, y_bmp, red, green, blue);
-                }
+                            // 限制颜色范围
+                            red = std::clamp(red, 0, 255);
+                            green = std::clamp(green, 0, 255);
+                            blue = std::clamp(blue, 0, 255);
+                            auto [x_bmp, y_bmp] = ConvertCoordinate(px, py);
+                        if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
+                            y_bmp >= 0 && y_bmp < m_bmp->GetHeight()) {
+                            int index = sx * msaaFactor + sy;
+                            msaaBuffer[x_bmp][y_bmp][index] = {red, green, blue};
+                        }
+                        //     auto [x_bmp, y_bmp] = ConvertCoordinate(x, y);
+                        // if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
+                        //     y_bmp >= 0 && y_bmp < m_bmp->GetHeight()) {
+                        //     m_bmp->setPixel(x_bmp, y_bmp, red, green, blue);
+                        // }
+                    }
+                    }
                 }
             }
         }
@@ -244,7 +259,7 @@ void Rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, Primitive ty
             vert.y = 0.5*height*(vert.y);
             vert.z = vert.z;
         }
-        std::cout<<v[0]<<v[1]<<v[2];
         DrawTriangle(v[0],255,0,0,v[1],0,255,0,v[2],0,0,255);
+        resolveMSAA();
     }
 }
