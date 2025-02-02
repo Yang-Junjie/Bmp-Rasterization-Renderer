@@ -43,7 +43,7 @@ int main() {
             // 后面
             {4,7,6}, {6,5,4}
         };
-
+////
     auto pos_id = draw.load_positions(pos);
     auto ind_id = draw.load_indices(ind);
 
