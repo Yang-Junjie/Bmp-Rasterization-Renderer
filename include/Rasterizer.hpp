@@ -4,6 +4,8 @@
 #include <tuple>
 #include "oe_math.hpp"
 #include <map>
+#include <optional>
+#include <algorithm>
 
 
 enum class Buffers
@@ -71,13 +73,14 @@ private:
 
     int msaaFactor; 
     std::vector<std::vector<std::vector<SubSample>>> msaaBuffer;
+    std::vector<std::vector<std::vector<float>>> msaaDepthBuffer;                                  
 
 private:
     void DrawLineBresenham(const oeVec3& bigen , const oeVec3& end);
-    void DrawRectangle(int x,int y,int width,int height);
     void DrawTriangle(const oeVec4& veticex1,int r1, int g1, int b1,
                       const oeVec4& veticex2,int r2, int g2, int b2,
                       const oeVec4& veticex3,int r3, int g3, int b3);
+    void resolveMSAA();
 
 public :
     Rasterizer(Bmp *bmp);
@@ -89,16 +92,15 @@ public :
     pos_buf_id load_positions(const std::vector<oeVec3>& positions);
     ind_buf_id load_indices(const std::vector<oeVec3>& indices);
 
+
     void SetModelMatrix(const Matrix4x4& mat) { modelMatrix = mat; }
     void SetViewMatrix(const Matrix4x4& mat) { viewMatrix = mat; }
     void SetProjMatrix(const Matrix4x4& mat) { projMatrix = mat; }
 
+
     void SpreadBackground();
-
     void DrawPoint(int x0, int y0);
-
     void clear(Buffers buff);
-    void resolveMSAA();
     void draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, Primitive type);
    
     

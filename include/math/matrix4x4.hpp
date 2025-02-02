@@ -52,10 +52,10 @@
     real& e43();
     real& e44();
 
-    Matrix4x4& set(const real& col1_x, const real& col1_y, const real& col1_z, const real& col1_w,
-        const real& col2_x, const real& col2_y, const real& col2_z, const real& col2_w,
-        const real& col3_x, const real& col3_y, const real& col3_z, const real& col3_w,
-        const real& col4_x, const real& col4_y, const real& col4_z, const real& col4_w);
+    Matrix4x4& set( const real& col1_x, const real& col1_y, const real& col1_z, const real& col1_w,
+                    const real& col2_x, const real& col2_y, const real& col2_z, const real& col2_w,
+                    const real& col3_x, const real& col3_y, const real& col3_z, const real& col3_w,
+                    const real& col4_x, const real& col4_y, const real& col4_z, const real& col4_w);
 
     Matrix4x4& set(const oeVec4& col1, const oeVec4& col2, const oeVec4& col3, const oeVec4& col4);
     Matrix4x4& set(const Matrix4x4& other);

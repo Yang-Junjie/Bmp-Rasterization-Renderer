@@ -201,7 +201,9 @@
 
 	Matrix3x3 Matrix3x3::identityMatrix()
 	{
-		return Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
+		return Matrix3x3(1, 0, 0, 
+						 0, 1, 0, 
+						 0, 0, 1);
 	}
 
 	Matrix3x3 Matrix3x3::multiply(const Matrix3x3& lhs, const Matrix3x3& rhs)
@@ -213,7 +215,7 @@
 
 	oeVec3 Matrix3x3::multiply(const Matrix3x3& lhs, const oeVec3& rhs)
 	{
-		return oeVec3(lhs.column1.x * rhs.x + lhs.column2.x * rhs.y + lhs.column3.x * rhs.z,
+		return oeVec3( lhs.column1.x * rhs.x + lhs.column2.x * rhs.y + lhs.column3.x * rhs.z,
 		               lhs.column1.y * rhs.x + lhs.column2.y * rhs.y + lhs.column3.y * rhs.z,
 		               lhs.column1.z * rhs.x + lhs.column2.z * rhs.y + lhs.column3.z * rhs.z);
 	}

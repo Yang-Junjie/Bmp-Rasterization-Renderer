@@ -132,9 +132,9 @@ namespace Transform {
         z = zFar - zNear;
 
         ortho  = {2 / w, 0, 0, 0,
-                0, 2 / h, 0, 0,
-                0, 0, 2 / z, -(zFar+zNear) / 2,
-                0, 0, 0, 1};
+                  0, 2 / h, 0, 0,
+                  0, 0, 2 / z, -(zFar+zNear) / 2,
+                  0, 0, 0, 1};
                                 
         projection = ortho.multiply(proj.multiply( projection));
 

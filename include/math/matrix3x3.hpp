@@ -14,8 +14,8 @@ struct  Matrix3x3
     Matrix3x3(const oeVec3& col1, const oeVec3& col2, const oeVec3& col3);
     Matrix3x3(ByRows,const oeVec3& row1, const oeVec3& row2, const oeVec3& row3);
     Matrix3x3(const real& row1_x, const real& row1_y, const real& row1_z,
-                const real& row2_x, const real& row2_y, const real& row2_z,
-                const real& row3_x, const real& row3_y, const real& row3_z);
+              const real& row2_x, const real& row2_y, const real& row2_z,
+              const real& row3_x, const real& row3_y, const real& row3_z);
     Matrix3x3(Matrix3x3&& other) = default;
 
     Matrix3x3& operator= (const Matrix3x3& rhs);

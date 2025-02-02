@@ -1,17 +1,13 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(bmp)
 
-# 设置源代码和头文件的路径
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src/)
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/)
 set(MATH_SRC_DIR ${SRC_DIR}/math/)
 
-# 添加头文件目录
 include_directories(${INCLUDE_DIR})
 include_directories(${INCLUDE_DIR}/math)
 
-# 收集所有源文件
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 
-# 创建可执行文件
 add_executable(bmp ${SOURCES})
