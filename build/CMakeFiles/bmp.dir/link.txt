@@ -1,3 +1,0 @@
-"C:\Program Files (x86)\CppTools\Cmake\bin\cmake.exe" -E rm -f CMakeFiles\bmp.dir/objects.a
-C:\PROGRA~2\CppTools\mingw64\bin\ar.exe qc CMakeFiles\bmp.dir/objects.a @CMakeFiles\bmp.dir\objects1.rsp
-C:\PROGRA~2\CppTools\mingw64\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\bmp.dir/objects.a -Wl,--no-whole-archive -o bmp.exe -Wl,--out-implib,libbmp.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\bmp.dir\linkLibs.rsp

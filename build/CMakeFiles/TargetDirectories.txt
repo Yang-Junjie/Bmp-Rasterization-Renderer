@@ -1,3 +1,0 @@
-G:/cpp/code/BMP/build/CMakeFiles/bmp.dir
-G:/cpp/code/BMP/build/CMakeFiles/edit_cache.dir
-G:/cpp/code/BMP/build/CMakeFiles/rebuild_cache.dir
