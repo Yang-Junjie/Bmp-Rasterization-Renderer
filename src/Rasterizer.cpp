@@ -28,16 +28,15 @@ auto to_vec4(const oeVec3& v3, float w = 1.0f)
 inline std::pair<int, int> Rasterizer::ConvertCoordinate(int x_user, int y_user)
 {
      
-    int x_bmp = x_user + m_center_x;
-    int y_bmp = m_center_y - y_user - 1;
+      int x_bmp = static_cast<int>(x_user);
+    int y_bmp = static_cast<int>(y_user);
     return {x_bmp, y_bmp};
     
 }
 
 Rasterizer::Rasterizer(Bmp *bmp) : m_bmp(bmp), msaaFactor(4)
 {
-    m_center_x = bmp->GetWidth() / 2;
-    m_center_y = bmp->GetHeight() / 2;
+   
     width = bmp->GetWidth();
     height = bmp->GetHeight();
     int samples = msaaFactor * msaaFactor;
@@ -221,11 +220,7 @@ void Rasterizer::DrawTriangle(const oeVec4& vertex1, int r1, int g1, int b1,
 
                             // 计算深度值（透视正确插值）
                             float depth = 1.0 / (d1/vertex1.w + d2/vertex2.w + d3/vertex3.w);
-                            float z = (d1*vertex1.z/vertex1.w + 
-                                  d2*vertex2.z/vertex2.w + 
-                                  d3*vertex3.z/vertex3.w) * depth;
-
-                            z*=depth;
+                            float z = (u * vertex1.z + v * vertex2.z + w * vertex3.z);
                             auto [x_bmp, y_bmp] = ConvertCoordinate(px, py);
                         if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
                             y_bmp >= 0 && y_bmp < m_bmp->GetHeight()) {
@@ -265,12 +260,8 @@ void Rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, Primitive ty
         }
         for (auto & vert : v)
         {
-            // vert.x = 0.5*width*(vert.x);
-            // vert.y = 0.5*height*(vert.y);
-            // vert.z = 0.5f * vert.z + 0.5f;
-
-            vert.x = (vert.x) * 0.5 * width; // 正确转换x坐标到屏幕空间
-            vert.y = ( vert.y) * 0.5 * height; // 反转y轴并转换到屏幕空间
+            vert.x = (vert.x + 1.0f) * 0.5f * (width - 1);
+            vert.y = (1.0f - vert.y) * 0.5f * (height - 1);
             vert.z = 0.5f * vert.z + 0.5f; // 转换深度到[0,1]范围（如果需要）
         }
 

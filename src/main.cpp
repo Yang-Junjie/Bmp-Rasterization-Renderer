@@ -13,7 +13,7 @@ int main() {
     draw.SetColor(255, 0, 0);
 
    
-    Camera camera(oeVec3(0, 0, 5));
+    Camera camera(oeVec3(0, 0, 10));
 
         std::vector<oeVec3> pos{
             // 前面
@@ -47,7 +47,7 @@ int main() {
     auto pos_id = draw.load_positions(pos);
     auto ind_id = draw.load_indices(ind);
 
-    draw.SetModelMatrix(Transform::Rotation4x4(0,45,0));
+    draw.SetModelMatrix(Transform::Rotation4x4(45,45,0));
     draw.SetViewMatrix(camera.GetViewMatrix());
     draw.SetProjMatrix(Transform::get_projection_matrix(45, 1, 0.1, 50));
 

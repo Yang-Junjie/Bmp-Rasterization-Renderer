@@ -40,10 +40,10 @@ void Bmp::SetData(const std::vector<uint8_t>& newData) {
 
 void Bmp::setPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b)
 {
-    if (x < 0 || x >= width || y < 0 || y >= height)
-        return;
-    auto idx = (height - y - 1) * row_stride + x * 3;
-    data[idx] = b;     // B
-    data[idx + 1] = g; // G
-    data[idx + 2] = r; // R
+    if (x < 0 || x >= width || y < 0 || y >= height) return;
+    // 直接计算索引（无需反转Y轴）
+    auto idx = y * row_stride + x * 3;
+    data[idx] = b;
+    data[idx + 1] = g;
+    data[idx + 2] = r;
 }
