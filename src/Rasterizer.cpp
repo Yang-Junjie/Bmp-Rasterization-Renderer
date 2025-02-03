@@ -1,78 +1,63 @@
 #include "Rasterizer.hpp"
 #include "vector2d.hpp"
 #include <algorithm>
-bool InsideTriangle(oeVec2 A, oeVec2 B, oeVec2 C, oeVec2 P) {
-    auto sign = [](oeVec2 p1, oeVec2 p2, oeVec2 p3) {
+
+bool InsideTriangle(oeVec2 A, oeVec2 B, oeVec2 C, oeVec2 P)
+{
+    auto sgin = [](oeVec2 p1, oeVec2 p2, oeVec2 p3)
+    {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
     };
 
-    double d1 = sign(P, A, B);
-    double d2 = sign(P, B, C);
-    double d3 = sign(P, C, A);
+    double d1 = sgin(P, A, B);
+    double d2 = sgin(P, B, C);
+    double d3 = sgin(P, C, A);
 
     bool has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
     bool has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
 
     return !(has_neg && has_pos);
 }
-auto to_vec2(const oeVec4& v3)
+
+auto to_vec2(const oeVec4 &v3)
 {
     return oeVec2(v3.x, v3.y);
 }
 
-auto to_vec4(const oeVec3& v3, float w = 1.0f)
+auto to_vec4(const oeVec3 &v3, real w = 1.0f)
 {
     return oeVec4(v3.x, v3.y, v3.z, w);
 }
 
-inline std::pair<int, int> Rasterizer::ConvertCoordinate(int x_user, int y_user)
+inline std::pair<int, int> Rasterizer::ConvertCoordinate(const real& x_user,const real& y_user)
 {
-     
-      int x_bmp = static_cast<int>(x_user);
+
+    int x_bmp = static_cast<int>(x_user);
     int y_bmp = static_cast<int>(y_user);
     return {x_bmp, y_bmp};
-    
 }
 
 Rasterizer::Rasterizer(Bmp *bmp) : m_bmp(bmp), msaaFactor(4)
 {
-   
+
     width = bmp->GetWidth();
     height = bmp->GetHeight();
     int samples = msaaFactor * msaaFactor;
-    msaaBuffer.resize(width, std::vector<std::vector<SubSample>>(height, std::vector<SubSample>(samples)));
-   
-    msaaDepthBuffer.resize(width, 
-        std::vector<std::vector<float>>(height,
-            std::vector<float>(samples, std::numeric_limits<float>::max())));
-    
-   
-    depth_buf.resize(width * height, std::numeric_limits<float>::max());
+    frame_buffer.resize(width, std::vector<std::vector<SubSample>>(height, std::vector<SubSample>(samples)));
+
+    depth_buffer.resize(width,
+                           std::vector<std::vector<real>>(height,
+                                                          std::vector<real>(samples, std::numeric_limits<real>::max())));
 }
 
-Rasterizer::~Rasterizer()
-{
-}
-
-void Rasterizer::SetColor(int r, int g, int b)
-{
-    this->r = r;
-    this->g = g;
-    this->b = b;
-}
-
-std::tuple<int, int, int> Rasterizer::GetColor()
-{
-    return std::tuple<int, int, int>(this->r,this->g,this->b);
-}
-
-pos_buf_id Rasterizer::load_positions(const std::vector<oeVec3> &positions)
+ver_buf_id Rasterizer::load_vertex(const std::vector<Vertex> &vertex)
 {
     auto id = get_next_id();
-    pos_buf.emplace(id, positions);
+    ver_buf.emplace(id, vertex);
 
     return {id};
 }
+
 
 ind_buf_id Rasterizer::load_indices(const std::vector<oeVec3> &indices)
 {
@@ -82,133 +67,101 @@ ind_buf_id Rasterizer::load_indices(const std::vector<oeVec3> &indices)
     return {id};
 }
 
-void Rasterizer::SpreadBackground()
+void Rasterizer::SpreadBackground(const int &r,const int &g,const int &b)
 {
-    for (int y = 0; y < m_bmp->GetHeight(); ++y) {
-        for (int x = 0; x < m_bmp->GetWidth(); ++x) {
-            m_bmp->setPixel(x, y, this->r,this->g,this->b);
+    for (int y = 0; y < m_bmp->GetHeight(); ++y)
+    {
+        for (int x = 0; x < m_bmp->GetWidth(); ++x)
+        {
+            m_bmp->setPixel(x, y, r, g, b);
         }
     }
 }
 
-void Rasterizer::DrawPoint(int x, int y) {
-    auto [x_bmp, y_bmp] = ConvertCoordinate(x, y);
-    if (x_bmp < 0 || x_bmp >= m_bmp->GetWidth() || 
-        y_bmp < 0 || y_bmp >= m_bmp->GetHeight()) {
+
+
+void Rasterizer::resolveMSAA()
+{
+    for (int x = 0; x < width; ++x)
+    {
+        for (int y = 0; y < height; ++y)
+        {
+            int total_r = 0, total_g = 0, total_b = 0;
+            int samples = msaaFactor * msaaFactor;
+            for (int i = 0; i < samples; ++i)
+            {
+                total_r += frame_buffer[x][y][i].r;
+                total_g += frame_buffer[x][y][i].g;
+                total_b += frame_buffer[x][y][i].b;
+            }
+            m_bmp->setPixel(x, y, total_r / samples, total_g / samples, total_b / samples);
+        }
+    }
+}
+
+void Rasterizer::DrawTriangle(const oeVec4 &vertex1, int r1, int g1, int b1,
+                              const oeVec4 &vertex2, int r2, int g2, int b2,
+                              const oeVec4 &vertex3, int r3, int g3, int b3)
+{
+    //Triangle Aare
+    double denominator = (vertex2.x - vertex1.x) * (vertex3.y - vertex1.y) - (vertex3.x - vertex1.x) * (vertex2.y - vertex1.y);
+    if (denominator == 0)
         return;
-    }
-    m_bmp->setPixel(x_bmp, y_bmp, this->r, this->g, this->b);
-}
-
-void Rasterizer::clear(Buffers buff) {
-    if ((buff & Buffers::Color) == Buffers::Color) {
-       std::fill(frame_buf.begin(), frame_buf.end(), oeVec3{0, 0, 0});
-    }
-    if ((buff & Buffers::Depth) == Buffers::Depth) {
-        // 清除主深度缓冲
-        std::fill(depth_buf.begin(), depth_buf.end(), 
-                std::numeric_limits<float>::max());
-        
-        // 清除子样本深度缓冲
-        for (auto& col : msaaDepthBuffer) {
-            for (auto& pixel : col) {
-                std::fill(pixel.begin(), pixel.end(), 
-                        std::numeric_limits<float>::max());
-            }
-        }
-    }
-}
-void Rasterizer::resolveMSAA() {
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
-                int total_r = 0, total_g = 0, total_b = 0;
-                int samples = msaaFactor * msaaFactor;
-                for (int i = 0; i < samples; ++i) {
-                    total_r += msaaBuffer[x][y][i].r;
-                    total_g += msaaBuffer[x][y][i].g;
-                    total_b += msaaBuffer[x][y][i].b;
-                }
-                m_bmp->setPixel(x, y, total_r/samples, total_g/samples, total_b/samples);
-            }
-        }
-}
-
-int Rasterizer::get_index(int x, int y)
-{
-     return (height-y)*width + x;
-}
-
-void Rasterizer::DrawLineBresenham(const oeVec3 &begin, const oeVec3 &end)
-{
-    int x0 = begin.x;
-    int y0 = begin.y;
-    int x1 = end.x;
-    int y1 = end.y;
-
-    int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-    int dy = abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-    int err = (dx > dy ? dx : -dy) / 2;
-
-    while (true) {
-        DrawPoint(x0, y0); 
-        if (x0 == x1 && y0 == y1) break;
-        int e2 = err;
-        if (e2 > -dx) { err -= dy; x0 += sx; }
-        if (e2 < dy) { err += dx; y0 += sy; }
-    }
-}
-
-
-void Rasterizer::DrawTriangle(const oeVec4& vertex1, int r1, int g1, int b1,
-                        const oeVec4& vertex2, int r2, int g2, int b2,
-                        const oeVec4& vertex3, int r3, int g3, int b3) {
-   
-
-   
-   double denominator = (vertex2.x - vertex1.x) * (vertex3.y - vertex1.y) - (vertex3.x - vertex1.x) * (vertex2.y - vertex1.y);
-    if (denominator == 0) return;
-
     
-    float min_x = std::min({vertex1.x, vertex2.x, vertex3.x});
-    float max_x = std::max({vertex1.x, vertex2.x, vertex3.x});
-    float min_y = std::min({vertex1.y, vertex2.y, vertex3.y});
-    float max_y = std::max({vertex1.y, vertex2.y, vertex3.y});
+    // Get Bounding Box
+    real min_x = std::min({vertex1.x, vertex2.x, vertex3.x});
+    real max_x = std::max({vertex1.x, vertex2.x, vertex3.x});
+    real min_y = std::min({vertex1.y, vertex2.y, vertex3.y});
+    real max_y = std::max({vertex1.y, vertex2.y, vertex3.y});
 
     int start_x = std::floor(min_x);
     int end_x = std::ceil(max_x);
     int start_y = std::floor(min_y);
     int end_y = std::ceil(max_y);
 
-    for (int x = start_x; x <= end_x; ++x) {
-        for (int y = start_y; y <= end_y; ++y) {
-            for (int sx = 0; sx < msaaFactor; ++sx) {
-                for (int sy = 0; sy < msaaFactor; ++sy) {
+    for (int x = start_x; x <= end_x; ++x)
+    {
+        for (int y = start_y; y <= end_y; ++y)
+        {
+            for (int sx = 0; sx < msaaFactor; ++sx)
+            {
+                for (int sy = 0; sy < msaaFactor; ++sy)
+                {
                     // 计算子样本点位置
-                    float px = x + (sx + 0.5f) / msaaFactor;
-                    float py = y + (sy + 0.5f) / msaaFactor;
+                    real px = x + (sx + 0.5) / msaaFactor;
+                    real py = y + (sy + 0.5) / msaaFactor;
                     oeVec2 P(px, py);
-                    if (InsideTriangle(to_vec2(vertex1), to_vec2(vertex2), to_vec2(vertex3), P)) {
-                        auto sign = [](oeVec2 p1, oeVec2 p2, oeVec2 p3) {
+
+                    //判断子样本点是否在三角形内
+                    if (InsideTriangle(to_vec2(vertex1), to_vec2(vertex2), to_vec2(vertex3), P))
+                    {
+                        
+                        auto TriangleArea = [](oeVec2 p1, oeVec2 p2, oeVec2 p3)
+                        {
                             return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
                         };
 
-                        double d1 = sign(P, to_vec2(vertex1), to_vec2(vertex2));
-                        double d2 = sign(P, to_vec2(vertex2), to_vec2(vertex3));
-                        double d3 = sign(P, to_vec2(vertex3), to_vec2(vertex1));
+                        double d1 = TriangleArea(P, to_vec2(vertex1), to_vec2(vertex2));
+                        double d2 = TriangleArea(P, to_vec2(vertex2), to_vec2(vertex3));
+                        double d3 = TriangleArea(P, to_vec2(vertex3), to_vec2(vertex1));
 
                         // 判断分母符号，确保面积比例正确
-                        if (denominator < 0) {
+                        if (denominator < 0)
+                        {
                             denominator = -denominator;
                             d1 = -d1;
                             d2 = -d2;
                             d3 = -d3;
                         }
 
+                        //计算该子样本点的重心坐标
                         double u = d2 / denominator;
                         double v = d3 / denominator;
                         double w = d1 / denominator;
 
-                        if (u >= 0 && u <= 1 && v >= 0 && v <= 1 && w >= 0 && w <= 1) {
+                        if (u >= 0 && u <= 1 && v >= 0 && v <= 1 && w >= 0 && w <= 1)
+                        {
+                            //颜色插值
                             int red = static_cast<int>(u * r1 + v * r2 + w * r3);
                             int green = static_cast<int>(u * g1 + v * g2 + w * g3);
                             int blue = static_cast<int>(u * b1 + v * b2 + w * b3);
@@ -218,21 +171,24 @@ void Rasterizer::DrawTriangle(const oeVec4& vertex1, int r1, int g1, int b1,
                             green = std::clamp(green, 0, 255);
                             blue = std::clamp(blue, 0, 255);
 
-                            // 计算深度值（透视正确插值）
-                            float depth = 1.0 / (d1/vertex1.w + d2/vertex2.w + d3/vertex3.w);
-                            float z = (u * vertex1.z + v * vertex2.z + w * vertex3.z);
+                            // 深度插值
+                            real depth = 1.0 / (d1 / vertex1.w + d2 / vertex2.w + d3 / vertex3.w);
+                            real z = (u * vertex1.z + v * vertex2.z + w * vertex3.z);
+
                             auto [x_bmp, y_bmp] = ConvertCoordinate(px, py);
-                        if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
-                            y_bmp >= 0 && y_bmp < m_bmp->GetHeight()) {
-                            int index = sx * msaaFactor + sy;
-                            // 深度测试（使用子样本深度）
-                            if (z < msaaDepthBuffer[x_bmp][y_bmp][index]) {
-                                // 更新颜色和深度
-                                msaaBuffer[x_bmp][y_bmp][index] = {red, green, blue};
-                                msaaDepthBuffer[x_bmp][y_bmp][index] = z;
+                            if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
+                                y_bmp >= 0 && y_bmp < m_bmp->GetHeight())
+                            {
+                                int index = sx * msaaFactor + sy;
+                                // 深度测试
+                                if (z < depth_buffer[x_bmp][y_bmp][index])
+                                {
+                                    // 更新颜色和深度
+                                    frame_buffer[x_bmp][y_bmp][index] = {red, green, blue};
+                                    depth_buffer[x_bmp][y_bmp][index] = z;
+                                }
                             }
                         }
-                    }
                     }
                 }
             }
@@ -240,36 +196,41 @@ void Rasterizer::DrawTriangle(const oeVec4& vertex1, int r1, int g1, int b1,
     }
 }
 
-void Rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, Primitive type)
+void Rasterizer::draw(ver_buf_id ver_buffer, ind_buf_id ind_buffer, Primitive type)
 {
+    //拿到对应id索引的
+    auto &ver = ver_buf[ver_buffer.ver_id];
+    auto &ind = ind_buf[ind_buffer.ind_id];
 
-    auto& buf = pos_buf[pos_buffer.pos_id];
-    auto& ind = ind_buf[ind_buffer.ind_id];
+    //mvp变换矩阵
+    Matrix4x4 mvp = projMatrix.multiply(viewMatrix.multiply(modelMatrix));
 
-
-    Matrix4x4 mvp = projMatrix.multiply(viewMatrix.multiply(modelMatrix)); 
-    for (auto& i : ind) {
+    for (auto &i : ind)
+    {
+        //mvp变换每个点
         oeVec4 v[] = {
-            mvp.multiply(to_vec4(buf[i.x], 1.0f)),
-            mvp.multiply(to_vec4(buf[i.y], 1.0f)),
-            mvp.multiply(to_vec4(buf[i.z], 1.0f))  
-        };
+            mvp.multiply(to_vec4(ver[i.x].position, 1.0)),
+            mvp.multiply(to_vec4(ver[i.y].position, 1.0)),
+            mvp.multiply(to_vec4(ver[i.z].position, 1.0))};
 
-        for (auto& vec : v) {
+        //归一化
+        for (auto &vec : v)
+        {
             vec /= vec.w;
         }
-        for (auto & vert : v)
+
+        //viewport transform
+        for (auto &vert : v)
         {
-            vert.x = (vert.x + 1.0f) * 0.5f * (width - 1);
-            vert.y = (1.0f - vert.y) * 0.5f * (height - 1);
-            vert.z = 0.5f * vert.z + 0.5f; // 转换深度到[0,1]范围（如果需要）
+            vert.x = (vert.x + 1.0) * 0.5 * (width - 1);
+            vert.y = (1.0 - vert.y) * 0.5 * (height - 1);
+            vert.z = 0.5f * vert.z + 0.5;
         }
 
-        
-        DrawTriangle(v[0],255,0,0,v[1],0,255,0,v[2],0,0,255);
-        
-        
-        
+
+        DrawTriangle(v[0],ver[i.x].color.x,ver[i.x].color.y,ver[i.x].color.z, v[1],ver[i.y].color.x,ver[i.y].color.y,ver[i.y].color.z , v[2],ver[i.z].color.x,ver[i.z].color.y,ver[i.z].color.z);
     }
+
+    //对所有的数据进行MSAA抗锯齿
     resolveMSAA();
 }

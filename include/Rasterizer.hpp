@@ -1,5 +1,7 @@
 #ifndef DRAW_HPP
 #define DRAW_HPP
+
+
 #include "bmp.hpp"
 #include <tuple>
 #include "oe_math.hpp"
@@ -7,22 +9,11 @@
 #include <optional>
 #include <algorithm>
 
-
 enum class Buffers
 {
     Color = 1,
     Depth = 2
 };
-
-inline Buffers operator|(Buffers a, Buffers b)
-{
-    return Buffers((int)a | (int)b);
-}
-
-inline Buffers operator&(Buffers a, Buffers b)
-{
-    return Buffers((int)a & (int)b);
-}
 
 enum class Primitive
 {
@@ -30,9 +21,9 @@ enum class Primitive
     Triangle
 };
 
-struct pos_buf_id
+struct ver_buf_id
 {
-    int pos_id = 0;
+    int ver_id = 0;
 };
 
 struct ind_buf_id
@@ -40,71 +31,58 @@ struct ind_buf_id
     int ind_id = 0;
 };
 
-struct SubSample {
+struct SubSample
+{
     int r = 0;
     int g = 0;
     int b = 0;
 };
 
-class Rasterizer{
+struct Vertex{
+    oeVec3 position; 
+    oeVec3 color;    
+};
+
+class Rasterizer
+{
 private:
-    int _x,_y;
-    int r,g,b;
     Bmp *m_bmp;
-    int m_center_x; 
-    int m_center_y; 
-    inline std::pair<int, int> ConvertCoordinate(int x_user, int y_user);
 
     Matrix4x4 modelMatrix = Matrix4x4::identityMatrix();
     Matrix4x4 viewMatrix = Matrix4x4::identityMatrix();
     Matrix4x4 projMatrix = Matrix4x4::identityMatrix();
 
-    std::map<int, std::vector<oeVec3>> pos_buf;
+    std::map<int, std::vector<Vertex>> ver_buf;
     std::map<int, std::vector<oeVec3>> ind_buf;
-
-    std::vector<oeVec3> frame_buf;
-    std::vector<float>  depth_buf;
-    int get_index(int x, int y);
 
     int width, height;
 
     int next_id = 0;
-    int get_next_id() { return next_id++; }
 
-    int msaaFactor; 
-    std::vector<std::vector<std::vector<SubSample>>> msaaBuffer;
-    std::vector<std::vector<std::vector<float>>> msaaDepthBuffer;                                  
+    int msaaFactor;
+    std::vector<std::vector<std::vector<SubSample>>> frame_buffer;
+    std::vector<std::vector<std::vector<real>>> depth_buffer;
 
 private:
-    void DrawLineBresenham(const oeVec3& bigen , const oeVec3& end);
-    void DrawTriangle(const oeVec4& veticex1,int r1, int g1, int b1,
-                      const oeVec4& veticex2,int r2, int g2, int b2,
-                      const oeVec4& veticex3,int r3, int g3, int b3);
+    int get_next_id() { return next_id++; }
+    inline std::pair<int, int> ConvertCoordinate(const real &x_user, const real &y_user);
+    void DrawTriangle(const oeVec4 &veticex1, int r1, int g1, int b1,
+                      const oeVec4 &veticex2, int r2, int g2, int b2,
+                      const oeVec4 &veticex3, int r3, int g3, int b3);
     void resolveMSAA();
 
-public :
+public:
     Rasterizer(Bmp *bmp);
-    ~Rasterizer();
 
-    void SetColor(int r,int g,int b);
-    std::tuple<int,int,int> GetColor();
+    ver_buf_id load_vertex(const std::vector<Vertex> &Vertex);
+    ind_buf_id load_indices(const std::vector<oeVec3> &indices);
 
-    pos_buf_id load_positions(const std::vector<oeVec3>& positions);
-    ind_buf_id load_indices(const std::vector<oeVec3>& indices);
+    void SetModelMatrix(const Matrix4x4 &mat) { modelMatrix = mat; }
+    void SetViewMatrix(const Matrix4x4 &mat) { viewMatrix = mat; }
+    void SetProjMatrix(const Matrix4x4 &mat) { projMatrix = mat; }
 
-
-    void SetModelMatrix(const Matrix4x4& mat) { modelMatrix = mat; }
-    void SetViewMatrix(const Matrix4x4& mat) { viewMatrix = mat; }
-    void SetProjMatrix(const Matrix4x4& mat) { projMatrix = mat; }
-
-
-    void SpreadBackground();
-    void DrawPoint(int x0, int y0);
-    void clear(Buffers buff);
-    void draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, Primitive type);
-   
-    
-    
-   
+    void SpreadBackground(const int &r, const int &g, const int &b);
+    void draw(ver_buf_id ver_buffer, ind_buf_id ind_buffer,Primitive type);
 };
+
 #endif
