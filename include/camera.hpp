@@ -23,4 +23,5 @@ public:
             0, 0, 0, 1};
         return view;
     }
+    oeVec3 GetPosition() const { return m_e; }
 };

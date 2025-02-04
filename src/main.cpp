@@ -12,21 +12,20 @@ int main()
     Bmp bmp(width, height);
     Rasterizer draw(&bmp);
 
-    draw.SpreadBackground(0,0,0);
+    draw.SpreadBackground(0, 0, 0);
 
     Camera camera(oeVec3(0, 0, 10));
-
     std::vector<Vertex> ver{
         
-        {{ 1,  1,-1},{255,255,255}},  
-        {{-1,  1,-1},{255,255,255}},  
-        {{-1, -1,-1},{255,255,255}}, 
-        {{ 1, -1,-1},{255,255,255}},  
+        {{ 1,  1,-1},{255,255,255}, {0,0,-1}},  
+        {{-1,  1,-1},{255,255,255}, {0,0,-1}},  
+        {{-1, -1,-1},{255,255,255}, {0,0,-1}}, 
+        {{ 1, -1,-1},{255,255,255}, {0,0,-1}},  
 
-        {{ 1,  1, 1},{0,255,255}},   
-        {{-1,  1, 1},{0,255,255}},  
-        {{-1, -1, 1},{0,255,255}}, 
-        {{ 1, -1, 1},{0,255,255}}   
+        {{ 1,  1, 1},{0,255,255}, {1,0,0}},   
+        {{-1,  1, 1},{0,255,255}, {1,0,0}},  
+        {{-1, -1, 1},{0,255,255}, {1,0,0}}, 
+        {{ 1, -1, 1},{0,255,255}, {1,0,0}}   
     };
 
     
@@ -51,18 +50,19 @@ int main()
         {4, 7, 6},
         {6, 5, 4}};
 
+   
 
-
-    ////
+    Light l = {camera.GetPosition(),oeVec3(0, 0,10 ),oeVec3(1.0,1.0,1.0 ),oeVec3(0.1f, 0.1f, 0.1f),{5500, 5500,5500},150};
     auto ver_id = draw.load_vertex(ver);
     auto ind_id = draw.load_indices(ind);
-   // auto col_id = draw.load_colors(col);
-
-    draw.SetModelMatrix(Transform::Rotation4x4(45, 200, 0));
+    
+    draw.SetLight(l);
+    draw.SetModelMatrix(Transform::Rotation4x4(45, 45, 45));
     draw.SetViewMatrix(camera.GetViewMatrix());
     draw.SetProjMatrix(Transform::get_projection_matrix(45, 1, 0.1, 50));
 
-    draw.draw(ver_id, ind_id,Primitive::Triangle);
+
+    draw.draw(ver_id, ind_id, Primitive::Triangle);
     bmp.save("output.bmp");
     return 0;
 }

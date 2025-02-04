@@ -38,7 +38,6 @@ public:
     bool save(const std::string &path) const;
     int GetWidth();
     int GetHeight();
-    
 
 private:
     int width, height;

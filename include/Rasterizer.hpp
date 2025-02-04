@@ -1,7 +1,6 @@
 #ifndef DRAW_HPP
 #define DRAW_HPP
 
-
 #include "bmp.hpp"
 #include <tuple>
 #include "oe_math.hpp"
@@ -38,16 +37,24 @@ struct SubSample
     int b = 0;
 };
 
-struct Vertex{
-    oeVec3 position; 
-    oeVec3 color;    
+struct Vertex
+{
+    oeVec3 position;
+    oeVec3 color;
+    oeVec3 normal;   
+};
+
+struct Light{
+
+    oeVec3 viewPostion, lightPos,lightColor,ambientColor,intensity;
+    real shininess;
 };
 
 class Rasterizer
 {
 private:
     Bmp *m_bmp;
-
+    Light light;
     Matrix4x4 modelMatrix = Matrix4x4::identityMatrix();
     Matrix4x4 viewMatrix = Matrix4x4::identityMatrix();
     Matrix4x4 projMatrix = Matrix4x4::identityMatrix();
@@ -66,9 +73,9 @@ private:
 private:
     int get_next_id() { return next_id++; }
     inline std::pair<int, int> ConvertCoordinate(const real &x_user, const real &y_user);
-    void DrawTriangle(const oeVec4 &veticex1, int r1, int g1, int b1,
-                      const oeVec4 &veticex2, int r2, int g2, int b2,
-                      const oeVec4 &veticex3, int r3, int g3, int b3);
+    void DrawTriangle(const oeVec4 &v1,const oeVec3& n1,const oeVec3& c1,
+                      const oeVec4 &v2,const oeVec3& n2,const oeVec3& c2,
+                      const oeVec4 &v3,const oeVec3& n3,const oeVec3& c3);
     void resolveMSAA();
 
 public:
@@ -80,9 +87,10 @@ public:
     void SetModelMatrix(const Matrix4x4 &mat) { modelMatrix = mat; }
     void SetViewMatrix(const Matrix4x4 &mat) { viewMatrix = mat; }
     void SetProjMatrix(const Matrix4x4 &mat) { projMatrix = mat; }
+    void SetLight(const Light& l){light = l;}
 
     void SpreadBackground(const int &r, const int &g, const int &b);
-    void draw(ver_buf_id ver_buffer, ind_buf_id ind_buffer,Primitive type);
+    void draw(ver_buf_id ver_buffer, ind_buf_id ind_buffer, Primitive type);
 };
 
 #endif

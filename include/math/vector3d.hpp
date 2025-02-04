@@ -36,6 +36,16 @@ struct oeVec3
     {
         return {-this->x, -this->y, -this->z};
     }
+    oeVec3 cwiseProduct(const oeVec3 &other)const{
+
+        return oeVec3(this->x*other.x,this->y*other.y,this->z*other.z);
+    }
+    // 反射函数
+
+    static oeVec3 reflect(const oeVec3& v, const oeVec3& n) {
+    oeVec3 normal = n.normalize(); // 保证法线向量是单位向量
+    return v - (normal * (2.0 * v.dot(normal)));
+    }
 
     oeVec3 operator*(const real &scalar) const
     {
