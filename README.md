@@ -2,7 +2,7 @@
 
 # 前言
 
-本项目是本人学习games101课程后，为了更深入了解渲染器而制作的一个非常简单的光栅化渲染器。笔记见docs[目录](https://github.com/Yang-Junjie/Bmp-Rasterization-Renderer/tree/master/docs/LearnCG)
+本项目是本人学习games101课程后，为了更深入了解渲染器而制作的一个非常简单的光栅化渲染器。
 
 # 功能
 
