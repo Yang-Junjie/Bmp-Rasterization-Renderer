@@ -17,15 +17,15 @@ int main()
     Camera camera(oeVec3(0, 0, 10));
     std::vector<Vertex> ver{
         
-        {{ 1,  1,-1},{255,255,255}, {0,0,-1}},  
-        {{-1,  1,-1},{255,255,255}, {0,0,-1}},  
-        {{-1, -1,-1},{255,255,255}, {0,0,-1}}, 
-        {{ 1, -1,-1},{255,255,255}, {0,0,-1}},  
+        {{ 1,  1,-1},{255,255,255}, {0,0,1}},  
+        {{-1,  1,-1},{255,255,255}, {0,0,1}},  
+        {{-1, -1,-1},{255,255,255}, {0,0,1}}, 
+        {{ 1, -1,-1},{255,255,255}, {0,0,1}},  
 
-        {{ 1,  1, 1},{0,255,255}, {1,0,0}},   
-        {{-1,  1, 1},{0,255,255}, {1,0,0}},  
-        {{-1, -1, 1},{0,255,255}, {1,0,0}}, 
-        {{ 1, -1, 1},{0,255,255}, {1,0,0}}   
+        {{ 1,  1, 1},{0,255,255}, {-1,0,0}},   
+        {{-1,  1, 1},{0,255,255}, {-1,0,0}},  
+        {{-1, -1, 1},{0,255,255}, {-1,0,0}}, 
+        {{ 1, -1, 1},{0,255,255}, {-1,0,0}}   
     };
 
     
@@ -52,12 +52,19 @@ int main()
 
    
 
-    Light l = {camera.GetPosition(),oeVec3(0, 0,10 ),oeVec3(1.0,1.0,1.0 ),oeVec3(0.1f, 0.1f, 0.1f),{5500, 5500,5500},150};
+    Light l = {
+    camera.GetPosition(), 
+    oeVec3(0, 10, 0), 
+    oeVec3(0, 255, 0), 
+    oeVec3(10, 10, 10), 
+    oeVec3(5500, 5500, 5500), 
+    150
+};
     auto ver_id = draw.load_vertex(ver);
     auto ind_id = draw.load_indices(ind);
     
     draw.SetLight(l);
-    draw.SetModelMatrix(Transform::Rotation4x4(45, 45, 45));
+    draw.SetModelMatrix(Transform::Rotation4x4(0, 20, 0));
     draw.SetViewMatrix(camera.GetViewMatrix());
     draw.SetProjMatrix(Transform::get_projection_matrix(45, 1, 0.1, 50));
 
