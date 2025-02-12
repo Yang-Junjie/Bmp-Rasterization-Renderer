@@ -210,8 +210,8 @@ void Rasterizer::DrawTriangle(const oeVec4 &v1, const oeVec3 &n1, const oeVec3 &
                             // std::cout<<color<<std::endl;
                             // 深度插值
                             real depth = 1.0 / (d1 / v1.w + d2 / v2.w + d3 / v3.w);
-                            real z = (u * v1.z / v1.w + v * v2.z / v2.w + w * v3.z / v3.w);
-                            z *= depth;
+                            real z = (u * v1.z / v1.w + v * v2.z / v2.w + w * v3.z / v3.w)*depth;
+                            
 
                             auto [x_bmp, y_bmp] = ConvertCoordinate(px, py);
                             if (x_bmp >= 0 && x_bmp < m_bmp->GetWidth() &&
@@ -233,25 +233,25 @@ void Rasterizer::DrawTriangle(const oeVec4 &v1, const oeVec3 &n1, const oeVec3 &
                                         u * v1.z + v * v2.z + w * v3.z};
 
                                     oeVec3 interp_normal = (n1 * u + n2 * v + n3 * w).normalize();
-                                 //   auto interp_view_pos = interpolate(u,v,w,viewpos[0],viewpos[1],viewpos[2],1);
+                                  // auto interp_view_pos = interpolate(u,v,w,viewpos[0],viewpos[1],viewpos[2],1);
 
-                                    // 计算Phong光照
-                                    // oeVec3 color = phong_shader(
-                                    //     frag_pos,
-                                    //     interp_normal,
-                                    //     light.viewPostion, // 需要添加获取相机位置的方法
-                                    //     light.lightPos,
-                                    //     light.lightColor,
-                                    //     light.ambientColor,
-                                    //     light.intensity,
-                                    //     light.shininess,
-                                    //     color1);
-                                    // std::cout<<color<<std::endl;
-                                    //  设置颜色
+                                   // 计算Phong光照
+                                    oeVec3 color = phong_shader(
+                                        frag_pos,
+                                        interp_normal,
+                                        light.viewPostion, // 需要添加获取相机位置的方法
+                                        light.lightPos,
+                                        light.lightColor,
+                                        light.ambientColor,
+                                        light.intensity,
+                                        light.shininess,
+                                        color1);
+                                    //std::cout<<color<<std::endl;
+                                    // 设置颜色
 
-                                    int r = std::clamp(static_cast<int>(color1.x), 0, 255);
-                                    int g = std::clamp(static_cast<int>(color1.y), 0, 255);
-                                    int b = std::clamp(static_cast<int>(color1.z), 0, 255);
+                                    int r = std::clamp(static_cast<int>(color.x), 0, 255);
+                                    int g = std::clamp(static_cast<int>(color.y), 0, 255);
+                                    int b = std::clamp(static_cast<int>(color.z), 0, 255);
 
                                     frame_buffer[x_bmp][y_bmp][index] = {r, g, b};
                                     depth_buffer[x_bmp][y_bmp][index] = z;

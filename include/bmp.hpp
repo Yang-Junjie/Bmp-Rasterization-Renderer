@@ -1,6 +1,7 @@
 #ifndef BMP_HPP
 #define BMP_HPP
 #include <fstream>
+#include <iostream>
 #include <vector>
 #include <cstdint>
 
@@ -34,14 +35,17 @@ class Bmp
 {
 public:
     Bmp(int width, int height);
+    Bmp(const std::string &path);
     void setPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b);
-    bool save(const std::string &path) const;
+    void save(const std::string &path) const;
     int GetWidth();
     int GetHeight();
+    static std::vector<std::vector<std::vector<uint8_t>>> readBMP(const std::string& filename);
+   
 
 private:
     int width, height;
     size_t row_stride;
-    std::vector<uint8_t> data;
+    std::vector<std::vector<std::vector<uint8_t>>> data;
 };
 #endif

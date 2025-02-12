@@ -18,7 +18,7 @@ struct oeVec3
 
     friend std::ostream &operator<<(std::ostream &os, const oeVec3 &p)
     {
-        os << "(" << p.x << ", " << p.y << p.z << ")";
+        os << "(" << p.x << ", " << p.y <<", "<< p.z << ")";
         return os;
     }
 
