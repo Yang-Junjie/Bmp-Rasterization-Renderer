@@ -1,6 +1,3 @@
-//
-// Created by LEI XU on 4/27/19.
-//
 
 #ifndef RASTERIZER_TEXTURE_H
 #define RASTERIZER_TEXTURE_H
@@ -10,7 +7,7 @@
 #include "bmp.hpp"
 class Texture{
 private:
-    std::vector<std::vector<std::vector<uint8_t>>> image_data;
+    std::vector<std::vector<oeVec3>> image_data;
 
 public:
     int width, height;
@@ -21,11 +18,11 @@ public:
         height = image_data[0].size();
     }
 
-    std::vector<std::vector<std::vector<uint8_t>>> getData(){return image_data;}
+    std::vector<std::vector<oeVec3>> getData(){return image_data;}
     oeVec3 getColor(float u, float v)
     {
-        return oeVec3(image_data[u][v][0], image_data[u][v][1], image_data[u][v][2]);
+        return oeVec3(image_data[u][v].x, image_data[u][v].y, image_data[u][v].z);
     }
 
 };
-#endif //RASTERIZER_TEXTURE_H
+#endif 

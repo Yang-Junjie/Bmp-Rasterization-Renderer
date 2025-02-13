@@ -10,4 +10,4 @@ include_directories(${INCLUDE_DIR}/math)
 
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 
-add_executable(bmp ${SOURCES})
+add_executable(bmp ${SOURCES})      
