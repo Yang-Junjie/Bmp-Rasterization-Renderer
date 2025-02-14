@@ -43,6 +43,7 @@ blinn-phong光照下的立方体
 ![image](img/phong-shading.bmp)
 
 Texture
+
 ![image](img/texture.bmp)
 
 # **技术栈总结**

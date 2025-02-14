@@ -52,13 +52,6 @@ struct nor_buf_id{
     int nor_id = 0;
 };
 
-struct SubSample
-{
-    int r = 0;
-    int g = 0;
-    int b = 0;
-};
-
 
 
 class Rasterizer
@@ -79,7 +72,6 @@ private:
 
     std::optional<Texture> texture;
 
-    
 
     int width, height;
     int next_id = 0;

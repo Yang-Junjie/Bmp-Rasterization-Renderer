@@ -333,8 +333,7 @@ void Rasterizer::rasterize_triangle(const Triangle& t)
                     //std::cout<<this->texture->getColor(interpolated_texcoords.x,interpolated_texcoords.y)<<std::endl;
                     oeVec3 color = this->texture->getColor(interpolated_texcoords.x,interpolated_texcoords.y);
                     set_pixel(p,color); //设置颜色
-                   // std::cout<<interpolated_texcoords<<std::endl;this->texture->getColor(interpolated_texcoords.x,interpolated_texcoords.y)
-                    //
+                  
                     depth_buf[get_index(x, y)] = z_interpolated;//更新z值
                 }
             }
