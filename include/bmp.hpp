@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdint>
+#include "oe_math.hpp"
 
 #pragma pack(push, 1)
 struct BMPFileHeader
@@ -40,12 +41,13 @@ public:
     void save(const std::string &path) const;
     int GetWidth();
     int GetHeight();
-    static std::vector<std::vector<std::vector<uint8_t>>> readBMP(const std::string& filename);
+    static std::vector<std::vector<oeVec3>> readBMP(const std::string& filename);
+    bool LoadData(const std::vector<oeVec3>& frame_buf);
    
 
 private:
     int width, height;
     size_t row_stride;
-    std::vector<std::vector<std::vector<uint8_t>>> data;
+    std::vector<std::vector<oeVec3>> data;
 };
 #endif
