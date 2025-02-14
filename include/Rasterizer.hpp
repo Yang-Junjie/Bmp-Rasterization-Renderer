@@ -8,7 +8,6 @@
 #include <optional>
 #include <algorithm>
 #include <functional>
-#include "Shader.hpp"
 #include "Triangle.hpp"
 
 enum class Buffers
@@ -80,8 +79,6 @@ private:
 
     std::optional<Texture> texture;
 
-    std::function<oeVec3(fragment_shader_payload)> fragment_shader;
-    std::function<oeVec3(vertex_shader_payload)> vertex_shader;
     
 
     int width, height;
@@ -92,13 +89,8 @@ private:
 
     int get_next_id() { return next_id++; }
     int get_index(int x, int y);
-    inline std::pair<int, int> ConvertCoordinate(const real &x_user, const real &y_user);
 
-    void DrawTriangle(const oeVec4 &v1,const oeVec3& n1,const oeVec3& c1,
-                      const oeVec4 &v2,const oeVec3& n2,const oeVec3& c2,
-                      const oeVec4 &v3,const oeVec3& n3,const oeVec3& c3);
-
-    void rasterize_triangle(const Triangle& t, const std::array<oeVec3, 3>& world_pos);
+    void rasterize_triangle(const Triangle& t);
 
     void draw_line(oeVec3 begin, oeVec3 end);
 
@@ -116,13 +108,8 @@ public:
 
     void set_texture(Texture tex) { texture = tex; }
 
-    void set_vertex_shader(std::function<oeVec3(vertex_shader_payload)> vert_shader);
-    void set_fragment_shader(std::function<oeVec3(fragment_shader_payload)> frag_shader);
     void set_pixel(const oeVec2 &point, const oeVec3 &color);
 
-    void SpreadBackground(const int &r, const int &g, const int &b);
-    
-    void draw(pos_buf_id ver_buffer, ind_buf_id ind_buffer, Primitive type);
     void draw(std::vector<Triangle *> &TriangleList);
 
     void clear(Buffers buff);

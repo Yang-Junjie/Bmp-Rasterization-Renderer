@@ -174,7 +174,7 @@ void Rasterizer::draw(std::vector<Triangle *> &TriangleList) {
     float f1 = (50 - 0.1) / 2.0;
     float f2 = (50 + 0.1) / 2.0;
 
-    Matrix4x4 mvp =projMatrix.multiply(modelMatrix.multiply(viewMatrix));
+    Matrix4x4 mvp =(projMatrix.multiply(viewMatrix)).multiply(modelMatrix);
     for (const auto& t:TriangleList)
     {
         Triangle newtri = *t;
@@ -221,12 +221,16 @@ void Rasterizer::draw(std::vector<Triangle *> &TriangleList) {
 
         for (auto & vert : v)
         {
-            vert.x = (vert.x + 1.0) * 0.5 * (width - 1);
-            vert.y = (1.0 - vert.y) * 0.5 * (height - 1);
-            vert.z = f1 * vert.z + f2;
+            // vert.x = (vert.x + 1.0) * 0.5 * (width - 1);
+            // vert.y = (1.0 - vert.y) * 0.5 * (height - 1);
+            // vert.z = f1 * vert.z + f2;
 
-            vert.x = std::clamp(vert.x, 0.0, width - 1.0);
-            vert.y = std::clamp(vert.y, 0.0, height - 1.0);
+            // vert.x = std::clamp(vert.x, 0.0, width - 1.0);
+            // vert.y = std::clamp(vert.y, 0.0, height - 1.0);
+
+            vert.x = 0.5*width*(vert.x+1.0);
+            vert.y = 0.5*height*(vert.y+1.0);
+            vert.z = vert.z * f1 + f2;
         }
 
         for (int i = 0; i < 3; ++i)
@@ -239,13 +243,11 @@ void Rasterizer::draw(std::vector<Triangle *> &TriangleList) {
             newtri.setNormal(i, to_vec3(n[i]));
         }
 
-        newtri.setColor(0, 148,0.0,92.0);
-        newtri.setColor(1, 148,0.0,92.0);
-        newtri.setColor(2, 148,0.0,92.0);
-        std::cout<<"1:"<<viewspace_pos[0]<<std::endl;
-        std::cout<<"2:"<<viewspace_pos[1]<<std::endl;
-        std::cout<<"3:"<<viewspace_pos[2]<<std::endl;
-        rasterize_triangle(newtri, viewspace_pos);
+        newtri.setColor(0, 0,0,0);
+        newtri.setColor(1, 0,255,255);
+        newtri.setColor(2, 255,0,0);
+       
+        rasterize_triangle(newtri);
     }
 }
 
@@ -278,7 +280,7 @@ static oeVec2 interpolate(float alpha, float beta, float gamma, const oeVec2& ve
 }
 
 //Screen space rasterization
-void Rasterizer::rasterize_triangle(const Triangle& t, const std::array<oeVec3, 3>& view_pos) 
+void Rasterizer::rasterize_triangle(const Triangle& t) 
 {
     
  auto v = t.toVector4();
@@ -323,17 +325,16 @@ void Rasterizer::rasterize_triangle(const Triangle& t, const std::array<oeVec3, 
                     oeVec2 p = { (float)x,(float)y};
                     // 颜色插值
                     auto interpolated_color = interpolate(alpha, beta, gamma, t.color[0], t.color[1], t.color[2], 1);
-                    // 法向量插值
-                    auto interpolated_normal = interpolate(alpha, beta, gamma, t.normal[0], t.normal[1], t.normal[2], 1);
+                    interpolated_color = {std::floor(interpolated_color.x*255.0),
+                        std::floor(interpolated_color.y*255.0),
+                        std::floor(interpolated_color.z*255.0)};
                     // 纹理颜色插值
                     auto interpolated_texcoords = interpolate(alpha, beta, gamma, t.tex_coords[0], t.tex_coords[1], t.tex_coords[2], 1);
-                    // 内部点位置插值
-                    auto interpolated_shadingcoords = interpolate(alpha, beta, gamma, view_pos[0], view_pos[1], view_pos[2], 1);
-                    fragment_shader_payload payload(interpolated_color, interpolated_normal.normalize(), interpolated_texcoords, texture ? &*texture : nullptr);
-                    payload.view_pos = interpolated_shadingcoords;
-                    auto pixel_color = fragment_shader(payload);
-                    set_pixel(p, pixel_color); //设置颜色
-                    
+                    //std::cout<<this->texture->getColor(interpolated_texcoords.x,interpolated_texcoords.y)<<std::endl;
+                    oeVec3 color = this->texture->getColor(interpolated_texcoords.x,interpolated_texcoords.y);
+                    set_pixel(p,color); //设置颜色
+                   // std::cout<<interpolated_texcoords<<std::endl;this->texture->getColor(interpolated_texcoords.x,interpolated_texcoords.y)
+                    //
                     depth_buf[get_index(x, y)] = z_interpolated;//更新z值
                 }
             }
@@ -377,14 +378,4 @@ void Rasterizer::set_pixel(const oeVec2 &point, const oeVec3 &color) {
     frame_buf[ind] = color;
 }
 
-
-void Rasterizer::set_vertex_shader(std::function<oeVec3(vertex_shader_payload)> vert_shader)
-{
-    vertex_shader = vert_shader;
-}
-
-void Rasterizer::set_fragment_shader(std::function<oeVec3(fragment_shader_payload)> frag_shader)
-{
-    fragment_shader = frag_shader;
-}
 

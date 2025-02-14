@@ -19,9 +19,18 @@ public:
     }
 
     std::vector<std::vector<oeVec3>> getData(){return image_data;}
+    
     oeVec3 getColor(float u, float v)
     {
-        return oeVec3(image_data[u][v].x, image_data[u][v].y, image_data[u][v].z);
+        if(u<0) u=0;
+        if(v<0) v=0;
+        if(u>1) u=1;
+        if(v>1) v=1;
+
+
+        auto x = u * width;
+        auto y = (1 - v) * height;
+        return oeVec3(image_data[x][y].x, image_data[x][y].y, image_data[x][y].z);
     }
 
 };

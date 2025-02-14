@@ -42,6 +42,9 @@ blinn-phong光照下的立方体
 
 ![image](img/phong-shading.bmp)
 
+Texture
+![image](img/texture.bmp)
+
 # **技术栈总结**
 
 - **语言特性**：面向对象、STL容器/算法、内存管理、操作符重载（如向量运算），现代C++特性。
