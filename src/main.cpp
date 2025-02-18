@@ -27,7 +27,7 @@ int main()
     std::string obj_path = "../models/cube/";
     bool loadout = Loader.LoadFile("../models/cube/cube.obj");
 
-    auto texture_path = "wall1.bmp";
+    auto texture_path = "rock.bmp";
     draw.set_texture(Texture(obj_path + texture_path));
 
     for(auto mesh:Loader.LoadedMeshes)
