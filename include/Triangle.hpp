@@ -2,6 +2,7 @@
 #define RASTERIZER_TRIANGLE_H
 
 #include "oe_math.hpp"
+#include <array>
 #include "Texture.hpp"
 
 class Triangle{

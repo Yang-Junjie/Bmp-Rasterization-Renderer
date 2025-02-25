@@ -1,13 +1,25 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(bmp)
 
-set(SRC_DIR ${PROJECT_SOURCE_DIR}/src/)
-set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/)
-set(MATH_SRC_DIR ${SRC_DIR}/math/)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(${INCLUDE_DIR})
-include_directories(${INCLUDE_DIR}/math)
+message("PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 
-file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
+set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
+message("SRC_DIR: ${SRC_DIR}")        
 
-add_executable(bmp ${SOURCES})      
+set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
+message("INCLUDE_DIR: ${INCLUDE_DIR}")
+
+set(MATH_SRC_DIR "${SRC_DIR}/math")
+message("MATH_SRC_DIR: ${MATH_SRC_DIR}")
+
+set(MATH_INCLUDE_DIR "${INCLUDE_DIR}/math")
+message("MATH_INCLUDE_DIR: ${MATH_INCLUDE_DIR}")
+
+include_directories(${INCLUDE_DIR} ${MATH_INCLUDE_DIR})
+
+file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp" "${MATH_SRC_DIR}/*.cpp")
+
+add_executable(bmp ${SOURCES})
