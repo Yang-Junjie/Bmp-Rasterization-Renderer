@@ -22,7 +22,7 @@
 ```shell
 $ cd build
 $ cmake ..
-$ cmake --build
+$ cmake --build .
 $ ./bmp.exe
 ```
 
