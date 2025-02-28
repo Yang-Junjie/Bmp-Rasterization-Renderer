@@ -25,7 +25,7 @@ $ cmake ..
 $ cmake --build .
 $ ./bmp.exe
 ```
-
+ 
 将会生成output.bmp结果图像
 
 # 演示
